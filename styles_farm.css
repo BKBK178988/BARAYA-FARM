@@ -1,0 +1,172 @@
+/* =========================
+   สไตล์พื้นฐานของหน้าเว็บ
+   ========================= */
+   body {
+    font-family: 'Arial', sans-serif;
+    background-color: #eaf5e3;
+    color: #2d4820;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-image: url('A_beautiful_modern_coconut_farm_with_a_small_river.png');
+    background-size: cover;
+    background-position: center;
+    padding: 60px 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    color: white;
+}
+
+h1 {
+    margin: 0;
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* ปุ่มตะกร้าสินค้า */
+.cart-button {
+    background-color: #8dc891;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.cart-button:hover {
+    background-color: #76b678;
+}
+
+/* โซนแสดงสินค้า */
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.product {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    text-align: center;
+    width: 250px;
+}
+
+.product img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.buy-button {
+    background-color: #8dc891;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-top: 10px;
+}
+
+.buy-button:hover {
+    background-color: #76b678;
+}
+
+/* ตะกร้าสินค้า (cart) */
+.cart {
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    width: 300px;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ซ่อน cart เมื่อมี class .hidden */
+.cart.hidden {
+    display: none;
+}
+
+/* เอฟเฟกต์ hover ที่ตัว cart */
+.cart:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ปุ่ม checkout/line ใน cart */
+.checkout-button {
+    display: block;
+    background-color: #a3d9a5;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.checkout-button:hover {
+    background-color: #8dc891;
+}
+
+/* ปิดปัญหา element ทับกัน */
+.cart-button {
+    z-index: 9999;
+}
+
+/* ส่วนท้าย (footer) */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #cde8c9;
+    margin-top: 20px;
+}
+
+/* สไตล์ภาษา */
+.language-switcher {
+    margin-top: 10px;
+}
+
+.language-switcher button {
+    margin-right: 5px;
+    cursor: pointer;
+    border: 1px solid #fff;
+    background-color: #76b678;
+    color: #fff;
+    border-radius: 5px;
+    padding: 5px 10px;
+}
+
+/* ขั้นตอนการสั่งซื้อ */
+.order-steps {
+    padding: 20px;
+    background-color: #f6fbf4;
+    margin: 20px;
+    border-radius: 10px;
+}
+
+.order-steps h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.order-steps ol {
+    margin: 0;
+    padding-left: 20px;
+}
