@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title data-lang="title">Checkout - BARAYA FARM</title>
+  <link rel="stylesheet" href="checkout_farm.css">
+  
+</head>
+<body>
+
+<header>
+  <h1 data-lang="checkout-title">🛒 Checkout</h1>
+  <p data-lang="checkout-subtitle">กรุณากรอกข้อมูลเพื่อจัดส่งสินค้า</p>
+  <div class="language-switcher">
+    <button onclick="changeLanguage('th')">🇹🇭 ไทย</button>
+    <button onclick="changeLanguage('en')">🇬🇧 English</button>
+    <button onclick="changeLanguage('zh')">🇨🇳 中文</button>
+  </div>
+</header>
+
+<section class="checkout-form">
+  <!-- ข้อมูลลูกค้า -->
+  <label for="customer-name" data-lang="label-name">ชื่อ - นามสกุล:</label>
+  <input type="text" id="customer-name" placeholder="ชื่อ - นามสกุล" required>
+
+  <label for="customer-address" data-lang="label-address">ที่อยู่จัดส่ง:</label>
+  <textarea id="customer-address" placeholder="กรอกที่อยู่สำหรับจัดส่ง" required></textarea>
+
+  <label for="customer-phone" data-lang="label-phone">เบอร์โทร:</label>
+  <input type="text" id="customer-phone" placeholder="กรอกเบอร์โทร" required>
+
+  <label for="customer-email" data-lang="label-email">อีเมล:</label>
+  <input type="email" id="customer-email" placeholder="กรอกอีเมล" required>
+
+  <!-- สรุปรายการในตะกร้า -->
+  <h2 data-lang="cart-items-title">รายการสินค้า</h2>
+  <ul id="checkout-cart"></ul>
+  <p id="checkout-total"></p>
+
+  <!-- QR Code PromptPay -->
+  <h3 data-lang="payment-title">ชำระเงินด้วยพร้อมเพย์</h3>
+  <img id="promptpay-qr" alt="QR Code พร้อมเพย์" style="max-width:200px;">
+  <p data-lang="payment-subtitle">สแกน QR Code ด้านบนเพื่อโอนเงินตามยอดรวม</p>
+
+  <!-- อัปโหลดสลิป -->
+  <label for="slipUpload" data-lang="upload-slip">อัปโหลดสลิปโอนเงิน:</label>
+  <input type="file" id="slipUpload" accept="image/*">
+  <div id="slipPreviewContainer" class="hidden">
+    <img id="slipPreview" style="max-width:200px;">
+  </div>
+
+  <button onclick="confirmOrder()" data-lang="btn-confirm">ยืนยันคำสั่งซื้อ</button>
+</section>
+
+<script>
+/************************************************
+ * 1) การเปลี่ยนภาษา (ไทย, อังกฤษ, จีน)
+ ************************************************/
+const translations = {
+  th: {
+    "title": "Checkout - BARAYA FARM",
+    "checkout-title": "🛒 Checkout",
+    "checkout-subtitle": "กรุณากรอกข้อมูลเพื่อจัดส่งสินค้า",
+    "label-name": "ชื่อ - นามสกุล:",
+    "label-address": "ที่อยู่จัดส่ง:",
+    "label-phone": "เบอร์โทร:",
+    "label-email": "อีเมล:",
+    "cart-items-title": "รายการสินค้า",
+    "payment-title": "ชำระเงินด้วยพร้อมเพย์",
+    "payment-subtitle": "สแกน QR Code ด้านบนเพื่อโอนเงินตามยอดรวม",
+    "upload-slip": "อัปโหลดสลิปโอนเงิน:",
+    "btn-confirm": "ยืนยันคำสั่งซื้อ",
+    "empty-cart-alert": "ตะกร้าสินค้าว่าง! กรุณาเลือกสินค้าก่อน",
+    "form-incomplete": "กรุณากรอกข้อมูลให้ครบและอัปโหลดสลิป!",
+    "order-success": "สั่งซื้อสำเร็จ! ขอบคุณที่ใช้บริการ",
+    "promptpay-error": "ไม่สามารถสร้าง QR Code พร้อมเพย์ได้",
+    "currency": "บาท"
+  },
+  en: {
+    "title": "Checkout - BARAYA FARM",
+    "checkout-title": "🛒 Checkout",
+    "checkout-subtitle": "Please fill in your shipping details",
+    "label-name": "Full Name:",
+    "label-address": "Shipping Address:",
+    "label-phone": "Phone Number:",
+    "label-email": "Email:",
+    "cart-items-title": "Your Cart Items",
+    "payment-title": "Pay via PromptPay",
+    "payment-subtitle": "Scan the QR Code above to pay the total amount",
+    "upload-slip": "Upload Payment Slip:",
+    "btn-confirm": "Confirm Order",
+    "empty-cart-alert": "Your cart is empty! Please select products first.",
+    "form-incomplete": "Please fill in all fields and upload the payment slip!",
+    "order-success": "Order placed successfully! Thank you!",
+    "promptpay-error": "Unable to generate PromptPay QR code",
+    "currency": "THB"
+  },
+  zh: {
+    "title": "结账 - BARAYA FARM",
+    "checkout-title": "🛒 结账",
+    "checkout-subtitle": "请填写送货信息",
+    "label-name": "姓名:",
+    "label-address": "送货地址:",
+    "label-phone": "电话号码:",
+    "label-email": "电子邮件:",
+    "cart-items-title": "购物车商品",
+    "payment-title": "通过 PromptPay 付款",
+    "payment-subtitle": "请扫描上方的二维码支付总金额",
+    "upload-slip": "上传支付凭证:",
+    "btn-confirm": "确认订单",
+    "empty-cart-alert": "购物车为空！请先选择商品。",
+    "form-incomplete": "请填写所有字段并上传付款凭证！",
+    "order-success": "订单已成功！感谢您的购买！",
+    "promptpay-error": "无法生成 PromptPay 二维码",
+    "currency": "泰铢"
+  }
+};
+
+function changeLanguage(lang) {
+  localStorage.setItem("language", lang);
+  document.querySelectorAll("[data-lang]").forEach(el => {
+    const key = el.dataset.lang;
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+}
+
+/************************************************
+ * 2) โหลดข้อมูลตะกร้า + สร้าง PromptPay QR
+ ************************************************/
+document.addEventListener("DOMContentLoaded", function() {
+  // โหลดภาษา
+  const savedLang = localStorage.getItem("language") || "th";
+  changeLanguage(savedLang);
+
+  // โหลดตะกร้าจาก localStorage
+  let cartFarm = JSON.parse(localStorage.getItem("cartFarm")) || [];
+  let totalPriceFarm = localStorage.getItem("totalPriceFarm") || 0;
+
+  // ถ้าตะกร้าว่าง ให้เตือนแล้วกลับไปหน้า farm.html
+  if (cartFarm.length === 0) {
+    alert(translations[savedLang]["empty-cart-alert"]);
+    window.location.href = "farm.html";
+    return;
+  }
+
+  // แสดงรายการสินค้า
+  let checkoutCart = document.getElementById("checkout-cart");
+  let checkoutTotal = document.getElementById("checkout-total");
+  cartFarm.forEach(item => {
+    let li = document.createElement("li");
+    li.textContent = `${item.name} x${item.quantity} = ${item.price * item.quantity} ${translations[savedLang]["currency"]}`;
+    checkoutCart.appendChild(li);
+  });
+  checkoutTotal.textContent = `ราคารวม: ${totalPriceFarm} ${translations[savedLang]["currency"]}`;
+
+  // สร้าง QR Code PromptPay
+  let promptpayNumber = "0639392988"; // เปลี่ยนเป็น PromptPay ของคุณ
+  let qrImage = document.getElementById("promptpay-qr");
+  let amountForQR = parseFloat(totalPriceFarm) || 0;
+  qrImage.src = `https://promptpay.io/${promptpayNumber}/${amountForQR}.png`;
+  qrImage.onerror = function() {
+    console.error(translations[savedLang]["promptpay-error"]);
+  };
+
+  // แสดงตัวอย่างสลิปเมื่ออัปโหลด
+  let slipUpload = document.getElementById("slipUpload");
+  slipUpload.addEventListener("change", function() {
+    let file = slipUpload.files[0];
+    if (!file) return;
+    let slipPreviewContainer = document.getElementById("slipPreviewContainer");
+    let slipPreview = document.getElementById("slipPreview");
+    slipPreviewContainer.classList.remove("hidden");
+    slipPreview.src = URL.createObjectURL(file);
+  });
+});
+
+/************************************************
+ * 3) ยืนยันคำสั่งซื้อ (เคลียร์ cartFarm, totalPriceFarm)
+ ************************************************/
+function confirmOrder() {
+  let lang = localStorage.getItem("language") || "th";
+
+  let name = document.getElementById("customer-name").value.trim();
+  let address = document.getElementById("customer-address").value.trim();
+  let phone = document.getElementById("customer-phone").value.trim();
+  let email = document.getElementById("customer-email").value.trim();
+  let slipFile = document.getElementById("slipUpload").files[0];
+
+  // เช็คกรอกฟอร์มครบหรือไม่
+  if (!name || !address || !phone || !email || !slipFile) {
+    alert(translations[lang]["form-incomplete"]);
+    return;
+  }
+
+  // แจ้งว่าทำรายการสำเร็จ
+  alert(translations[lang]["order-success"]);
+
+  // เคลียร์ตะกร้า
+  localStorage.removeItem("cartFarm");
+  localStorage.removeItem("totalPriceFarm");
+
+  // กลับไปหน้า farm.html
+  window.location.href = "farm.html";
+}
+</script>
+
+</body>
+</html>
