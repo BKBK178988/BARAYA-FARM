@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>BARAYA FARM</title>
+  <!-- ✅ เรียกใช้ไฟล์ CSS ภายนอก -->
+  <link rel="stylesheet" href="styles_farm.css">
+</head>
+<body>
+
+  <header>
+    <h1 data-lang="title">BARAYA FARM</h1>
+    <p data-lang="subtitle">ผักผลไม้สดใหม่ ส่งตรงจากฟาร์ม</p>
+    <!-- ปุ่มเปิด/ปิดตะกร้าสินค้า -->
+    <button class="cart-button" onclick="toggleCartFarm()">
+      🛒 <span data-lang="cart">ตะกร้าสินค้า</span> (<span id="cart-count-farm">0</span>)
+    </button>
+
+    <!-- ปุ่มเปลี่ยนภาษา -->
+    <div class="language-switcher">
+      <button onclick="changeLanguage('th')">🇹🇭 ไทย</button>
+      <button onclick="changeLanguage('en')">🇬🇧 English</button>
+      <button onclick="changeLanguage('zh')">🇨🇳 中文</button>
+    </div>
+  </header>
+
+  <section class="products">
+    <!-- กล้วยน้ำว้า -->
+    <div class="product" data-name="กล้วยน้ำว้า" data-price="50">
+      <img src="banana1.jpg" alt="กล้วยน้ำว้า"
+      <h2 data-lang="banana">กล้วยน้ำว้า</h2>
+      <p data-lang="banana-desc">หวานธรรมชาติ เนื้อนุ่มอร่อย</p>
+      <p data-lang="banana-price">ราคา: 50 บาท/หวี</p>
+      <button class="buy-button" onclick="addToCartFarm('กล้วยน้ำว้า', 50)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+
+    <!-- ฝรั่งกิมจู -->
+    <div class="product" data-name="ฝรั่งกิมจู" data-price="60">
+      <img src="Guayaba.jpg" alt="ฝรั่งกิมจู"
+      <h2 data-lang="guava">ฝรั่งกิมจู</h2>
+      <p data-lang="guava-desc">กรอบ หวาน อร่อย</p>
+      <p data-lang="guava-price">ราคา: 60 บาท/กิโลกรัม</p>
+      <button class="buy-button" onclick="addToCartFarm('ฝรั่งกิมจู', 60)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+
+    <!-- มะพร้าวน้ำหอม -->
+    <div class="product" data-name="มะพร้าวน้ำหอม" data-price="35">
+      <img src="green-coconut-1936274.jpg" alt="มะพร้าวน้ำหอม"
+      <h2 data-lang="coconut">มะพร้าวน้ำหอม</h2>
+      <p data-lang="coconut-desc">น้ำหวาน หอม สดชื่น</p>
+      <p data-lang="coconut-price">ราคา: 35 บาท/ลูก</p>
+      <button class="buy-button" onclick="addToCartFarm('มะพร้าวน้ำหอม', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+
+    <!-- มะพร้าวเผา -->
+    <div class="product" data-name="มะพร้าวเผา" data-price="40">
+      <img src="Coconut barn.jpeg" alt="มะพร้าวเผา"
+      <h2 data-lang="roasted-coconut">มะพร้าวเผา</h2>
+      <p data-lang="roasted-coconut-desc">กลิ่นเผาอ่อน ๆ</p>
+      <p data-lang="roasted-coconut-price">ราคา: 40 บาท/ลูก</p>
+      <button class="buy-button" onclick="addToCartFarm('มะพร้าวเผา', 40)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+
+    <!-- ใบเตยสด -->
+    <div class="product" data-name="ใบเตยสด" data-price="20">
+      <img src="pandan.jpg" alt="ใบเตยสด"
+      <h2 data-lang="fresh-pandan">ใบเตยสด</h2>
+      <p data-lang="fresh-pandan-desc">หอมสดชื่น ใช้ทำขนมและเครื่องดื่ม</p>
+      <p data-lang="fresh-pandan-price">ราคา: 20 บาท/กำ</p>
+      <button class="buy-button" onclick="addToCartFarm('ใบเตยสด', 20)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+  </section>
+
+  <!-- ตะกร้าสินค้า -->
+  <div id="cart-farm" class="cart hidden">
+    <h2>🛒 <span data-lang="cart">ตะกร้าสินค้า</span></h2>
+    <ul id="cart-items-farm"></ul>
+    <p id="total-price-farm">ราคารวม: 0 บาท</p>
+    <button id="saveOrderButtonFarm" data-lang="save-order">📸 บันทึกออเดอร์เป็นรูปภาพ</button>
+    <!-- ลิงก์ไปหน้าเช็คเอาท์ -->
+    <a href="checkout_farm.html" class="checkout-button" data-lang="checkout">🛍️ ดำเนินการสั่งซื้อ</a>
+    <!-- ปุ่มสั่งซื้อผ่าน LINE -->
+    <a id="lineOrderButtonFarm" href="#" target="_blank" class="checkout-button" data-lang="order-line">📲 สั่งซื้อผ่าน LINE</a>
+  </div>
+
+  <!-- ขั้นตอนการสั่งซื้อ -->
+  <section class="order-steps">
+    <h2 data-lang="order-steps-title">🛍️ วิธีการสั่งซื้อ</h2>
+    <ol>
+        <li data-lang="order-step-1">เลือกสินค้าและเพิ่มลงตะกร้า</li>
+        <li data-lang="order-step-2">กดปุ่ม "📸 บันทึกออเดอร์เป็นรูปภาพ"</li>
+        <li data-lang="order-step-3">เพิ่มเพื่อนผู้ขายผ่าน <a href="https://line.me/ti/p/OJY81U61Jk" target="_blank">LINE</a></li>
+        <li data-lang="order-step-4">ส่งรูปภาพออเดอร์ที่บันทึกไว้ให้ผู้ขาย</li>
+        <li data-lang="order-step-5">รอรับข้อมูลและยืนยันคำสั่งซื้อ</li>
+    </ol>
+  </section>
+
+  <!-- html2canvas (ใช้บันทึกตะกร้าเป็นรูปภาพ) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- สคริปต์หลัก -->
+  <script>
+    /****************************************
+     * 1) ระบบเปลี่ยนภาษา (ไทย/อังกฤษ/จีน)
+     ****************************************/
+    const translations = {
+      th: {
+        "title": "BARAYA FARM",
+        "subtitle": "ผักผลไม้สดใหม่ ส่งตรงจากฟาร์ม",
+        "cart": "ตะกร้าสินค้า",
+        "banana": "กล้วยน้ำว้า",
+        "banana-desc": "หวานธรรมชาติ เนื้อนุ่มอร่อย",
+        "banana-price": "ราคา: 50 บาท/หวี",
+        "guava": "ฝรั่งกิมจู",
+        "guava-desc": "กรอบ หวาน อร่อย",
+        "guava-price": "ราคา: 60 บาท/กิโลกรัม",
+        "coconut": "มะพร้าวน้ำหอม",
+        "coconut-desc": "น้ำหวาน หอม สดชื่น",
+        "coconut-price": "ราคา: 35 บาท/ลูก",
+        "roasted-coconut": "มะพร้าวเผา",
+        "roasted-coconut-desc": "กลิ่นเผาอ่อน ๆ",
+        "roasted-coconut-price": "ราคา: 40 บาท/ลูก",
+        "fresh-pandan": "ใบเตยสด",
+        "fresh-pandan-desc": "หอมสดชื่น ใช้ทำขนมและเครื่องดื่ม",
+        "fresh-pandan-price": "ราคา: 20 บาท/กำ",
+        "cart-not-found": "❌ ไม่พบ <div id='cart-farm'> ใน HTML",
+        "add-to-cart": "เพิ่มลงตะกร้า",
+        "save-order": "📸 บันทึกออเดอร์เป็นรูปภาพ",
+        "checkout": "🛍️ ดำเนินการสั่งซื้อ",
+        "order-line": "📲 สั่งซื้อผ่าน LINE",
+        "order-steps-title": "🛍️ วิธีการสั่งซื้อ",
+        "order-step-1": "เลือกสินค้าและเพิ่มลงตะกร้า",
+        "order-step-2": "กดปุ่ม \"📸 บันทึกออเดอร์เป็นรูปภาพ\"",
+        "order-step-3": "เพิ่มเพื่อนผู้ขายผ่าน LINE",
+        "order-step-4": "ส่งรูปภาพออเดอร์ที่บันทึกไว้ให้ผู้ขาย",
+        "order-step-5": "รอรับข้อมูลและยืนยันคำสั่งซื้อ",
+        "currency": "บาท",
+        "remove": "ลบ",
+        "total-price": "ราคารวม",
+        "order-message-start": "สวัสดี! ฉันต้องการสั่งซื้อสินค้า:",
+        "order-message-empty": "สวัสดี! ฉันต้องการสอบถามข้อมูลเพิ่มเติมเกี่ยวกับสินค้า"
+      },
+      en: {
+        "title": "BARAYA FARM",
+        "subtitle": "Fresh fruits and vegetables directly from the farm",
+        "cart": "Shopping Cart",
+        "banana": "Banana",
+        "banana-desc": "Naturally sweet and soft",
+        "banana-price": "Price: 50 THB/bunch",
+        "guava": "Guava",
+        "guava-desc": "Crispy, sweet, and delicious",
+        "guava-price": "Price: 60 THB/kg",
+        "coconut": "Fragrant Coconut",
+        "coconut-desc": "Sweet, fragrant, and refreshing",
+        "coconut-price": "Price: 35 THB/piece",
+        "roasted-coconut": "Roasted Coconut",
+        "roasted-coconut-desc": "Lightly roasted aroma",
+        "roasted-coconut-price": "Price: 40 THB/piece",
+        "fresh-pandan": "Fresh Pandan",
+        "fresh-pandan-desc": "Fresh aroma, used for desserts & drinks",
+        "fresh-pandan-price": "Price: 20 THB/bunch",
+        "cart-not-found": "<div id='cart-farm'> not found in HTML",
+        "add-to-cart": "Add to Cart",
+        "save-order": "📸 Save Order as Image",
+        "checkout": "🛍️ Proceed to Checkout",
+        "order-line": "📲 Order via LINE",
+        "order-steps-title": "🛍️ How to Order",
+        "order-step-1": "Select products and add them to the cart",
+        "order-step-2": "Click \"📸 Save order as an image\"",
+        "order-step-3": "Add the seller via LINE",
+        "order-step-4": "Send the saved order image to the seller",
+        "order-step-5": "Wait for confirmation and order details",
+        "currency": "THB",
+        "remove": "Remove",
+        "total-price": "Total Price",
+        "order-message-start": "Hello! I'd like to order the following items:",
+        "order-message-empty": "Hello! I'd like to inquire about your products."
+      },
+      zh: {
+        "title": "BARAYA 农场",
+        "subtitle": "新鲜水果和蔬菜，直接来自农场",
+        "cart": "购物车",
+        "banana": "香蕉",
+        "banana-desc": "天然甜美，口感柔软",
+        "banana-price": "价格：50 泰铢/串",
+        "guava": "番石榴",
+        "guava-desc": "爽脆、香甜、美味",
+        "guava-price": "价格：60 泰铢/公斤",
+        "coconut": "香椰",
+        "coconut-desc": "甜美芬芳，清爽宜人",
+        "coconut-price": "价格：35 泰铢/个",
+        "roasted-coconut": "烤椰子",
+        "roasted-coconut-desc": "轻度烤香",
+        "roasted-coconut-price": "价格：40 泰铢/个",
+        "fresh-pandan": "新鲜香兰叶",
+        "fresh-pandan-desc": "香气怡人，用于甜点和饮品",
+        "fresh-pandan-price": "价格：20 泰铢/捆",
+        "cart-not-found": "HTML 中未找到 <div id='cart-farm'>",
+        "add-to-cart": "加入购物车",
+        "save-order": "📸 保存订单为图片",
+        "checkout": "🛍️ 去结账",
+        "order-line": "📲 通过 LINE 订购",
+        "order-steps-title": "🛍️ 订购流程",
+        "order-step-1": "选择商品并加入购物车",
+        "order-step-2": "点击 \"📸 保存订单为图片\"",
+        "order-step-3": "通过 LINE 添加卖家",
+        "order-step-4": "将保存的订单图片发送给卖家",
+        "order-step-5": "等待确认和订单信息",
+        "currency": "泰铢",
+        "remove": "删除",
+        "total-price": "总价",
+        "order-message-start": "你好！我想订购以下商品：",
+        "order-message-empty": "你好！我想了解更多商品信息。"
+      }
+    };
+
+    // เปลี่ยนภาษา
+    function changeLanguage(lang) {
+      localStorage.setItem("language", lang);
+      const elements = document.querySelectorAll("[data-lang]");
+      elements.forEach(el => {
+        const key = el.dataset.lang;
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+    // ดึงข้อความแปลตามภาษา
+    function getTranslation(key) {
+      let lang = localStorage.getItem("language") || "th";
+      return translations[lang][key] || key;
+    }
+
+    // ==========================
+    // 2) จัดการตะกร้าสินค้า (cartFarm)
+    // ==========================
+    let cartFarm = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      // โหลดภาษาจาก localStorage
+      const savedLang = localStorage.getItem("language") || "th";
+      changeLanguage(savedLang);
+
+      // โหลดตะกร้าจาก localStorage
+      let storedCart = localStorage.getItem("cartFarm");
+      if (storedCart) {
+        try {
+          cartFarm = JSON.parse(storedCart);
+        } catch (error) {
+          console.error("localStorage parse error:", error);
+        }
+      }
+      updateCartFarm();
+    });
+
+    // เพิ่มสินค้าในตะกร้า
+    function addToCartFarm(name, price) {
+      let existingItem = cartFarm.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.quantity++;
+      } else {
+        cartFarm.push({ name, price, quantity: 1 });
+      }
+      updateCartFarm();
+    }
+
+    // ลบ/ลดจำนวนสินค้า
+    function removeFromCartFarm(name) {
+      let idx = cartFarm.findIndex(item => item.name === name);
+      if (idx !== -1) {
+        if (cartFarm[idx].quantity > 1) {
+          cartFarm[idx].quantity--;
+        } else {
+          cartFarm.splice(idx, 1);
+        }
+      }
+      updateCartFarm();
+    }
+
+    // อัปเดตการแสดงผลตะกร้า
+    function updateCartFarm() {
+      let cartList = document.getElementById("cart-items-farm");
+      let totalPriceEl = document.getElementById("total-price-farm");
+      let cartCountEl = document.getElementById("cart-count-farm");
+      let lineOrderBtn = document.getElementById("lineOrderButtonFarm");
+
+      if (!cartList || !totalPriceEl || !cartCountEl || !lineOrderBtn) {
+        console.error(getTranslation("cart-not-found"));
+        return;
+      }
+
+      cartList.innerHTML = "";
+      let total = 0;
+      let totalItems = 0;
+
+      cartFarm.forEach(item => {
+        let li = document.createElement("li");
+        li.innerHTML = `
+          ${item.name} x${item.quantity} - ${item.price * item.quantity} ${getTranslation("currency")}
+          <button onclick="removeFromCartFarm('${item.name}')">❌ ${getTranslation("remove")}</button>
+        `;
+        cartList.appendChild(li);
+
+        total += item.price * item.quantity;
+        totalItems += item.quantity;
+      });
+
+      // แสดงผลจำนวนชิ้น และราคารวม
+      cartCountEl.textContent = totalItems;
+      totalPriceEl.textContent = `${getTranslation("total-price")}: ${total} ${getTranslation("currency")}`;
+
+      // เซฟลง localStorage
+      localStorage.setItem("cartFarm", JSON.stringify(cartFarm));
+      localStorage.setItem("totalPriceFarm", total);
+
+      // สร้างข้อความสำหรับสั่งซื้อผ่าน LINE
+      let message = cartFarm.length > 0
+        ? `${getTranslation("order-message-start")}\n` +
+          cartFarm.map(i => `${i.name} x${i.quantity} - ${i.price * i.quantity} ${getTranslation("currency")}`).join("\n")
+        : getTranslation("order-message-empty");
+
+      let lineURL = `https://line.me/ti/p/~bk0704?text=${encodeURIComponent(message)}`;
+      lineOrderBtn.href = lineURL;
+    }
+
+    // เปิด/ปิดแสดงตะกร้า
+    function toggleCartFarm() {
+      let cartEl = document.getElementById("cart-farm");
+      if (!cartEl) {
+        console.error(getTranslation("cart-not-found"));
+        return;
+      }
+      cartEl.classList.toggle("hidden");
+    }
+
+    // ==============================
+    // 3) บันทึกตะกร้าเป็นรูปภาพ (html2canvas)
+    // ==============================
+    document.getElementById("saveOrderButtonFarm").addEventListener("click", function() {
+      let cartList = document.getElementById("cart-items-farm");
+      if (!cartList || cartList.children.length === 0) {
+        alert("❌ กรุณาเพิ่มสินค้าลงตะกร้าก่อนบันทึกออเดอร์");
+        return;
+      }
+      let cartEl = document.getElementById("cart-farm");
+      html2canvas(cartEl, { scale: 2 }).then(canvas => {
+        canvas.toBlob(blob => {
+          let file = new File([blob], "order.png", { type: "image/png" });
+          // เช็คว่ารองรับ navigator.share ไหม
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            navigator.share({
+              files: [file],
+              title: "Order",
+              text: "รายการออเดอร์ที่ต้องการสั่งซื้อ",
+            }).catch(err => console.error("ไม่สามารถแชร์ได้:", err));
+          } else {
+            // ถ้าแชร์ไม่ได้ ให้ดาวน์โหลดไฟล์แทน
+            let link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "order.png";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }
+        }, "image/png");
+      });
+    });
+
+    // ทำให้ฟังก์ชัน removeFromCartFarm มองเห็นได้จาก HTML
+    window.removeFromCartFarm = removeFromCartFarm;
+    window.toggleCartFarm = toggleCartFarm;
+    window.addToCartFarm = addToCartFarm;
+    window.changeLanguage = changeLanguage;
+  </script>
+
+  <footer>
+    <p>ติดต่อเรา: <a href="https://line.me/ti/p/OJY81U61Jk">LINE</a></p>
+    <p>&copy; 2025 BARAYA FARM</p>
+  </footer>
+
+</body>
+</html>
