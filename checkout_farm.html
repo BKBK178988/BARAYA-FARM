@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title data-lang="title">Checkout - BARAYA FARM</title>
   <link rel="stylesheet" href="checkout_farm.css">
-  
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 </head>
 <body>
 
@@ -51,6 +51,11 @@
 
   <button onclick="confirmOrder()" data-lang="btn-confirm">ยืนยันคำสั่งซื้อ</button>
 </section>
+
+/************************************************
+ * EmailJS Init
+ ************************************************/
+emailjs.init("EUHurGnUrY9Q-SbaO");
 
 <script>
 /************************************************
@@ -177,10 +182,11 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 /************************************************
- * 3) ยืนยันคำสั่งซื้อ (เคลียร์ cartFarm, totalPriceFarm)
+ * 3) ยืนยันคำสั่งซื้อ (ส่งผ่าน EmailJS)
  ************************************************/
 function confirmOrder() {
   let lang = localStorage.getItem("language") || "th";
+  let totalPriceFarm = localStorage.getItem("totalPriceFarm") || 0;
 
   let name = document.getElementById("customer-name").value.trim();
   let address = document.getElementById("customer-address").value.trim();
@@ -188,21 +194,41 @@ function confirmOrder() {
   let email = document.getElementById("customer-email").value.trim();
   let slipFile = document.getElementById("slipUpload").files[0];
 
-  // เช็คกรอกฟอร์มครบหรือไม่
   if (!name || !address || !phone || !email || !slipFile) {
     alert(translations[lang]["form-incomplete"]);
     return;
   }
 
-  // แจ้งว่าทำรายการสำเร็จ
-  alert(translations[lang]["order-success"]);
+  let cartFarm = JSON.parse(localStorage.getItem("cartFarm")) || [];
+  let orderDetails = cartFarm.map(item => `${item.name} x${item.quantity} = ${item.price * item.quantity} ${translations[lang]["currency"]}`).join("\n");
+  let order_id = "BRY-" + Math.floor(100000 + Math.random() * 900000);
 
-  // เคลียร์ตะกร้า
-  localStorage.removeItem("cartFarm");
-  localStorage.removeItem("totalPriceFarm");
+  const reader = new FileReader();
+  reader.onload = function(event) {
+    const base64Slip = event.target.result;
 
-  // กลับไปหน้า farm.html
-  window.location.href = "farm.html";
+    const templateParams = {
+      name: name,
+      address: address,
+      phone: phone,
+      email: email,
+      order: orderDetails,
+      total: totalPriceFarm,
+      order_id: order_id,
+      slip_image: base64Slip
+    };
+
+    emailjs.send("service_8arkcft", "template_7s28pv9", templateParams)
+      .then(function(response) {
+        alert(translations[lang]["order-success"]);
+        localStorage.removeItem("cartFarm");
+        localStorage.removeItem("totalPriceFarm");
+        window.location.href = "farm.html";
+      }, function(error) {
+        alert("❌ เกิดข้อผิดพลาด: " + JSON.stringify(error));
+      });
+  };
+  reader.readAsDataURL(slipFile);
 }
 </script>
 
