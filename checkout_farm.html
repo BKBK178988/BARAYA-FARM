@@ -206,31 +206,47 @@ function confirmOrder() {
   let orderDetails = cartFarm.map(item => `${item.name} x${item.quantity} = ${item.price * item.quantity} ${translations[lang]["currency"]}`).join("\n");
   let order_id = "BRY-" + Math.floor(100000 + Math.random() * 900000);
 
+  // บีบอัดภาพ slip ก่อนส่งผ่าน EmailJS
+  const MAX_WIDTH = 400;
   const reader = new FileReader();
-  reader.onload = function(event) {
-    const base64Slip = event.target.result;
 
-    const templateParams = {
-      name: name,
-      address: address,
-      phone: phone,
-      email: email,
-      order: orderDetails,
-      total: totalPriceFarm,
-      order_id: order_id,
-      slip_image: base64Slip
+  reader.onload = function(e) {
+    const img = new Image();
+    img.onload = function() {
+      const canvas = document.createElement('canvas');
+      const scaleSize = MAX_WIDTH / img.width;
+      canvas.width = MAX_WIDTH;
+      canvas.height = img.height * scaleSize;
+
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7);
+
+      const templateParams = {
+        name: name,
+        address: address,
+        phone: phone,
+        email: email,
+        order: orderDetails,
+        total: totalPriceFarm,
+        order_id: order_id,
+        slip_image: compressedBase64
+      };
+
+      emailjs.send("service_8arkcft", "template_7s28pv9", templateParams)
+        .then(function(response) {
+          alert(translations[lang]["order-success"]);
+          localStorage.removeItem("cartFarm");
+          localStorage.removeItem("totalPriceFarm");
+          window.location.href = "farm.html";
+        }, function(error) {
+          alert("❌ เกิดข้อผิดพลาด: " + JSON.stringify(error));
+        });
     };
-
-    emailjs.send("service_8arkcft", "template_7s28pv9", templateParams)
-      .then(function(response) {
-        alert(translations[lang]["order-success"]);
-        localStorage.removeItem("cartFarm");
-        localStorage.removeItem("totalPriceFarm");
-        window.location.href = "farm.html";
-      }, function(error) {
-        alert("❌ เกิดข้อผิดพลาด: " + JSON.stringify(error));
-      });
+    img.src = e.target.result;
   };
+
   reader.readAsDataURL(slipFile);
 }
 </script>
