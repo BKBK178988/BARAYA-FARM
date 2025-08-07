@@ -1,3 +1,8 @@
+/************************************************
+ * EmailJS Init
+ ************************************************/
+emailjs.init("EUHurGnUrY9Q-SbaO");
+
 document.addEventListener("DOMContentLoaded", function() {
     let cartData = localStorage.getItem("cart");
     let totalPrice = localStorage.getItem("totalPrice");
@@ -21,26 +26,42 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function sendOrderToEmail(name, email, address, phone, orderDetails, totalPrice) {
-    let formData = new FormData();
-    formData.append("name", name);
-    formData.append("email", email);
-    formData.append("address", address);
-    formData.append("phone", phone);
-    formData.append("orderDetails", orderDetails);
-    formData.append("totalPrice", totalPrice);
+function sendOrderToEmail(name, email, address, phone, orderDetails, totalPrice, slipFile) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const slipBase64 = event.target.result;
+            const order_id = "BRY-" + Math.floor(100000 + Math.random() * 900000);
 
-    return fetch("send_email.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(response => response.text())
-    .then(data => {
-        alert(data);
-    })
-    .catch(error => {
-        console.error(getTranslation("email-error"), error);
-        alert(getTranslation("email-fail"));
+            const templateParams = {
+                name,
+                email,
+                address,
+                phone,
+                order: orderDetails,
+                total: totalPrice,
+                order_id,
+                slip_image: slipBase64
+            };
+
+            emailjs.send("service_8arkcft", "template_7s28pv9", templateParams)
+                .then(function(response) {
+                    alert(getTranslation("order-success"));
+                    resolve();
+                }, function(error) {
+                    console.error(getTranslation("email-error"), error);
+                    alert(getTranslation("email-fail"));
+                    reject(error);
+                });
+        };
+
+        reader.onerror = function(error) {
+            console.error(getTranslation("email-error"), error);
+            alert(getTranslation("email-fail"));
+            reject(error);
+        };
+
+        reader.readAsDataURL(slipFile);
     });
 }
 
@@ -65,7 +86,7 @@ function confirmOrder() {
     let orderDetails = cart.map(item => `📦 ${item.name} x${item.quantity} - ${item.price * item.quantity} ${getTranslation("currency")}`).join("\n");
     let totalPrice = localStorage.getItem("totalPrice");
 
-    sendOrderToEmail(name, email, address, phone, orderDetails, totalPrice)
+    sendOrderToEmail(name, email, address, phone, orderDetails, totalPrice, slipFile)
     .then(() => {
         alert(getTranslation("order-success"));
 
