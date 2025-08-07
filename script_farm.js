@@ -151,4 +151,3 @@ if (typeof cartFarm === 'undefined') {
    3) Toggle cart => cart-farm visible/hidden.
    4) Switch language => text changes.
   */
-  
