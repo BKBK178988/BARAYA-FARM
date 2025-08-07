@@ -24,80 +24,74 @@ document.addEventListener("DOMContentLoaded", function() {
     } else {
         console.error(getTranslation("qr-error"));
     }
-});
-
-function sendOrderToEmail(name, email, address, phone, orderDetails, totalPrice, slipFile) {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            const slipBase64 = event.target.result;
-            const order_id = "BRY-" + Math.floor(100000 + Math.random() * 900000);
-
-            const templateParams = {
-                name,
-                email,
-                address,
-                phone,
-                order: orderDetails,
-                total: totalPrice,
-                order_id,
-                slip_image: slipBase64
-            };
-
-            emailjs.send("service_8arkcft", "template_7s28pv9", templateParams)
-                .then(function(response) {
-                    alert(getTranslation("order-success"));
-                    resolve();
-                }, function(error) {
-                    console.error(getTranslation("email-error"), error);
-                    alert(getTranslation("email-fail"));
-                    reject(error);
-                });
-        };
-
-        reader.onerror = function(error) {
-            console.error(getTranslation("email-error"), error);
-            alert(getTranslation("email-fail"));
-            reject(error);
-        };
-
-        reader.readAsDataURL(slipFile);
-    });
 }
 
+);
+
 function confirmOrder() {
-    let name = document.getElementById("customer-name").value;
-    let email = document.getElementById("customer-email").value;
-    let address = document.getElementById("customer-address").value;
-    let phone = document.getElementById("customer-phone").value;
-    let slipFile = document.getElementById("slipUpload").files[0];
+  let lang = localStorage.getItem("language") || "th";
+  let totalPriceFarm = localStorage.getItem("totalPriceFarm") || 0;
 
-    if (!name || !email || !address || !phone || !slipFile) {
-        alert(getTranslation("form-incomplete"));
-        return;
-    }
+  let name = document.getElementById("customer-name").value.trim();
+  let address = document.getElementById("customer-address").value.trim();
+  let phone = document.getElementById("customer-phone").value.trim();
+  let email = document.getElementById("customer-email").value.trim();
+  let slipFile = document.getElementById("slipUpload").files[0];
 
-    let cart = JSON.parse(localStorage.getItem("cart")) || [];
-    if (cart.length === 0) {
-        alert(getTranslation("cart-empty"));
-        return;
-    }
+  if (!name || !address || !phone || !email || !slipFile) {
+    alert(translations[lang]["form-incomplete"]);
+    return;
+  }
 
-    let orderDetails = cart.map(item => `📦 ${item.name} x${item.quantity} - ${item.price * item.quantity} ${getTranslation("currency")}`).join("\n");
-    let totalPrice = localStorage.getItem("totalPrice");
+  const MAX_WIDTH = 400;
 
-    sendOrderToEmail(name, email, address, phone, orderDetails, totalPrice, slipFile)
-    .then(() => {
-        alert(getTranslation("order-success"));
+  const img = new Image();
+  const reader = new FileReader();
 
-        localStorage.removeItem("cart");
-        localStorage.removeItem("totalPrice");
+  reader.onload = function (e) {
+    img.src = e.target.result;
+  };
 
-        window.location.href = "index.html";
-    })
-    .catch(error => {
-        console.error(getTranslation("order-error"), error);
-    });
+  img.onload = function () {
+    const canvas = document.createElement('canvas');
+    const scaleSize = MAX_WIDTH / img.width;
+    canvas.width = MAX_WIDTH;
+    canvas.height = img.height * scaleSize;
+
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+    const compressedBase64 = canvas.toDataURL("image/jpeg", 0.7); // ปรับ quality ตามต้องการ
+
+    let cartFarm = JSON.parse(localStorage.getItem("cartFarm")) || [];
+    let orderDetails = cartFarm.map(item =>
+      `${item.name} x${item.quantity} = ${item.price * item.quantity} ${translations[lang]["currency"]}`
+    ).join("\n");
+    let order_id = "BRY-" + Math.floor(100000 + Math.random() * 900000);
+
+    const templateParams = {
+      name,
+      address,
+      phone,
+      email,
+      order: orderDetails,
+      total: totalPriceFarm,
+      order_id,
+      slip_image: compressedBase64
+    };
+
+    emailjs.send("service_8arkcft", "template_7s28pv9", templateParams)
+      .then(function (response) {
+        alert(translations[lang]["order-success"]);
+        localStorage.removeItem("cartFarm");
+        localStorage.removeItem("totalPriceFarm");
+        window.location.href = "farm.html";
+      }, function (error) {
+        alert("❌ เกิดข้อผิดพลาด: " + JSON.stringify(error));
+      });
+  };
+
+  reader.readAsDataURL(slipFile);
 }
 
 function getTranslation(key) {
