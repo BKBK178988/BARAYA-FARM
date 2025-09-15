@@ -52,18 +52,11 @@
   <button onclick="confirmOrder()" data-lang="btn-confirm">ยืนยันคำสั่งซื้อ</button>
 </section>
 
-
 <script>
-/************************************************
- * EmailJS Init
- ************************************************/
+// EmailJS Init
 emailjs.init("EUHurGnUrY9Q-SbaO");
-</script>
 
-<script>
-/************************************************
- * 1) การเปลี่ยนภาษา (ไทย, อังกฤษ, จีน)
- ************************************************/
+// แปลภาษา
 const translations = {
   th: {
     "title": "Checkout - BARAYA FARM",
@@ -82,7 +75,8 @@ const translations = {
     "form-incomplete": "กรุณากรอกข้อมูลให้ครบและอัปโหลดสลิป!",
     "order-success": "สั่งซื้อสำเร็จ! ขอบคุณที่ใช้บริการ",
     "promptpay-error": "ไม่สามารถสร้าง QR Code พร้อมเพย์ได้",
-    "currency": "บาท"
+    "currency": "บาท",
+    "total-price": "รวมทั้งหมด"
   },
   en: {
     "title": "Checkout - BARAYA FARM",
@@ -101,7 +95,8 @@ const translations = {
     "form-incomplete": "Please fill in all fields and upload the payment slip!",
     "order-success": "Order placed successfully! Thank you!",
     "promptpay-error": "Unable to generate PromptPay QR code",
-    "currency": "THB"
+    "currency": "THB",
+    "total-price": "Total"
   },
   zh: {
     "title": "结账 - BARAYA FARM",
@@ -120,7 +115,8 @@ const translations = {
     "form-incomplete": "请填写所有字段并上传付款凭证！",
     "order-success": "订单已成功！感谢您的购买！",
     "promptpay-error": "无法生成 PromptPay 二维码",
-    "currency": "泰铢"
+    "currency": "泰铢",
+    "total-price": "总价"
   }
 };
 
@@ -128,65 +124,63 @@ function changeLanguage(lang) {
   localStorage.setItem("language", lang);
   document.querySelectorAll("[data-lang]").forEach(el => {
     const key = el.dataset.lang;
-    if (translations[lang][key]) {
-      el.textContent = translations[lang][key];
-    }
+    if (translations[lang][key]) el.textContent = translations[lang][key];
   });
 }
 
-/************************************************
- * 2) โหลดข้อมูลตะกร้า + สร้าง PromptPay QR
- ************************************************/
+// โหลดข้อมูลตะกร้า + สรุปรายการสินค้า + QR
 document.addEventListener("DOMContentLoaded", function() {
-  // โหลดภาษา
   const savedLang = localStorage.getItem("language") || "th";
   changeLanguage(savedLang);
 
-  // โหลดตะกร้าจาก localStorage
   let cartFarm = JSON.parse(localStorage.getItem("cartFarm")) || [];
-  let totalPriceFarm = localStorage.getItem("totalPriceFarm") || 0;
-
-  // ถ้าตะกร้าว่าง ให้เตือนแล้วกลับไปหน้า farm.html
   if (cartFarm.length === 0) {
     alert(translations[savedLang]["empty-cart-alert"]);
     window.location.href = "farm.html";
     return;
   }
 
-  // แสดงรายการสินค้า
   let checkoutCart = document.getElementById("checkout-cart");
   let checkoutTotal = document.getElementById("checkout-total");
+  checkoutCart.innerHTML = "";
+
+  let sumTotal = 0;
+
   cartFarm.forEach(item => {
-    let li = document.createElement("li");
-    li.textContent = `${item.name} x${item.quantity} = ${item.price * item.quantity} ${translations[savedLang]["currency"]}`;
+    const itemKey = item.key || item.name || "unknown";
+    const itemQty = item.quantity || 1;
+    const itemPrice = item.price || 0;
+    const itemTotal = itemPrice * itemQty;
+    sumTotal += itemTotal;
+
+    const li = document.createElement("li");
+    li.textContent = `${itemKey} x ${itemQty} = ${itemTotal.toLocaleString()} ${translations[savedLang]["currency"]}`;
     checkoutCart.appendChild(li);
   });
-  checkoutTotal.textContent = `ราคารวม: ${totalPriceFarm} ${translations[savedLang]["currency"]}`;
 
-  // สร้าง QR Code PromptPay
-  let promptpayNumber = "0639392988"; // เปลี่ยนเป็น PromptPay ของคุณ
-  let qrImage = document.getElementById("promptpay-qr");
-  let amountForQR = parseFloat(totalPriceFarm) || 0;
-  qrImage.src = `https://promptpay.io/${promptpayNumber}/${amountForQR}.png`;
-  qrImage.onerror = function() {
-    console.error(translations[savedLang]["promptpay-error"]);
-  };
+  checkoutTotal.textContent = `${translations[savedLang]["total-price"]}: ${sumTotal.toLocaleString()} ${translations[savedLang]["currency"]}`;
 
-  // แสดงตัวอย่างสลิปเมื่ออัปโหลด
-  let slipUpload = document.getElementById("slipUpload");
+  localStorage.setItem("totalPriceFarm", sumTotal);
+
+  // QR PromptPay
+  const promptpayNumber = "0639392988"; // เปลี่ยนเป็นของคุณ
+  const qrImage = document.getElementById("promptpay-qr");
+  qrImage.src = `https://promptpay.io/${promptpayNumber}/${sumTotal}.png`;
+  qrImage.onerror = function() { console.error(translations[savedLang]["promptpay-error"]); };
+
+  // ตัวอย่างสลิป
+  const slipUpload = document.getElementById("slipUpload");
   slipUpload.addEventListener("change", function() {
-    let file = slipUpload.files[0];
+    const file = slipUpload.files[0];
     if (!file) return;
-    let slipPreviewContainer = document.getElementById("slipPreviewContainer");
-    let slipPreview = document.getElementById("slipPreview");
+    const slipPreviewContainer = document.getElementById("slipPreviewContainer");
+    const slipPreview = document.getElementById("slipPreview");
     slipPreviewContainer.classList.remove("hidden");
     slipPreview.src = URL.createObjectURL(file);
   });
 });
 
-/************************************************
- * 3) ยืนยันคำสั่งซื้อ (ส่งผ่าน EmailJS)
- ************************************************/
+// ยืนยันคำสั่งซื้อ + EmailJS
 function confirmOrder() {
   let lang = localStorage.getItem("language") || "th";
   let totalPriceFarm = localStorage.getItem("totalPriceFarm") || 0;
@@ -203,13 +197,17 @@ function confirmOrder() {
   }
 
   let cartFarm = JSON.parse(localStorage.getItem("cartFarm")) || [];
-  let orderDetails = cartFarm.map(item => `${item.name} x${item.quantity} = ${item.price * item.quantity} ${translations[lang]["currency"]}`).join("\n");
+  let orderDetails = cartFarm.map(item => {
+    const itemName = item.name || item.key || "ไม่ทราบชื่อสินค้า";
+    const itemPrice = item.price || 0;
+    const itemQty = item.quantity || 1;
+    return `${itemName} x ${itemQty} = ${itemPrice * itemQty} ${translations[lang]["currency"]}`;
+  }).join("\n");
+
   let order_id = "BRY-" + Math.floor(100000 + Math.random() * 900000);
 
-  // บีบอัดภาพ slip ก่อนส่งผ่าน EmailJS
   const MAX_WIDTH = 400;
   const reader = new FileReader();
-
   reader.onload = function(e) {
     const img = new Image();
     img.onload = function() {
@@ -217,7 +215,6 @@ function confirmOrder() {
       const scaleSize = MAX_WIDTH / img.width;
       canvas.width = MAX_WIDTH;
       canvas.height = img.height * scaleSize;
-
       const ctx = canvas.getContext('2d');
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
@@ -246,7 +243,6 @@ function confirmOrder() {
     };
     img.src = e.target.result;
   };
-
   reader.readAsDataURL(slipFile);
 }
 </script>
