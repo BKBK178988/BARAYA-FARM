@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <title>โภชนาการสำหรับเด็ก</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+        body {
+            font-family: 'Sarabun', Arial, sans-serif;
+            background: linear-gradient(135deg, #f9fbe7 0%, #e0f2f1 100%);
+            margin: 0;
+            padding: 0;
+            color: #2c3e50;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        header {
+            background: #e8f5e9;
+            color: #fff;
+            padding: 3em 1.5em 2em 1.5em;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(42, 157, 143, 0.4);
+            border-bottom-left-radius: 24px;
+            border-bottom-right-radius: 24px;
+        }
+        header h1 {
+            margin: 0 0 0.3em 0;
+            font-size: 2.8em;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.15);
+            color: #388e3c;
+        }
+        header p.subtitle {
+            font-size: 1.3em;
+            margin: 0 0 0.5em 0;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            color: #388e3c;
+        }
+        header p.description {
+            font-size: 1.05em;
+            margin: 0 auto;
+            max-width: 600px;
+            font-weight: 400;
+            line-height: 1.6;
+            opacity: 0.85;
+            color: #4e5d52;
+        }
+        nav {
+            background: #e0f2f1;
+            padding: 0.9em 0;
+            margin: 2em 0 2em 0;
+            box-shadow: 0 2px 8px rgba(42, 157, 143, 0.12);
+            text-align: center;
+            border-radius: 12px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        nav a {
+            color: #2a9d8f;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.15em;
+            padding: 0.6em 1.5em;
+            border-radius: 8px;
+            transition: background 0.3s, color 0.3s;
+            border: 2px solid transparent;
+            display: inline-block;
+        }
+        nav a:hover {
+            background: #2a9d8f;
+            color: #fff;
+            border-color: #2a9d8f;
+        }
+        section#kids {
+            background: #fff;
+            max-width: 720px;
+            margin: 0 auto 3em auto;
+            padding: 2.5em 2.5em 3em 2.5em;
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(42, 157, 143, 0.12);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5em;
+        }
+        section#kids h2 {
+            color: #2a9d8f;
+            margin: 0;
+            font-size: 2em;
+            font-weight: 700;
+            letter-spacing: 0.03em;
+            text-align: center;
+        }
+        section#kids p:first-of-type {
+            font-size: 1.15em;
+            line-height: 1.7;
+            color: #34495e;
+            max-width: 650px;
+            margin: 0 auto 1.5em auto;
+            text-align: center;
+            font-weight: 400;
+        }
+        section#kids ul#benefits-list {
+            max-width: 650px;
+            margin: 0 auto 2em auto;
+            padding-left: 1.3em;
+            color: #27ae60;
+            font-weight: 600;
+            font-size: 1.1em;
+            line-height: 1.5;
+            list-style-type: disc;
+        }
+        section#kids h3 {
+            color: #27ae60;
+            font-size: 1.4em;
+            font-weight: 700;
+            margin: 0 0 0.8em 0;
+            text-align: center;
+            letter-spacing: 0.02em;
+        }
+        #kids-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.6em 1.8em;
+            padding: 0;
+            list-style: none;
+            margin: 0;
+        }
+        #kids-menu li {
+            background: #e6f2f1;
+            border-radius: 16px;
+            box-shadow: 0 4px 16px rgba(39, 174, 96, 0.15);
+            padding: 1.8em 1.5em 1.8em 1.5em;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: default;
+            position: relative;
+        }
+        #kids-menu li:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 30px rgba(39, 174, 96, 0.35);
+            background: #27ae60;
+            color: #fff;
+        }
+        #kids-menu li:hover strong {
+            color: #fff;
+        }
+        #kids-menu li::before {
+            content: "🍽️";
+            font-size: 1.5em;
+            margin-bottom: 0.8em;
+            align-self: flex-start;
+            transition: color 0.3s ease;
+        }
+        #kids-menu li:hover::before {
+            color: #d4f5e9;
+        }
+        #kids-menu li strong {
+            font-weight: 700;
+            font-size: 1.25em;
+            margin-bottom: 0.7em;
+            color: #27ae60;
+            transition: color 0.3s ease;
+        }
+        #kids-menu li:hover {
+            color: #fff;
+        }
+        #kids-menu li span {
+            font-size: 1.05em;
+            line-height: 1.4;
+            word-break: break-word;
+        }
+        footer {
+            background: #2a9d8f;
+            color: #dff9fb;
+            text-align: center;
+            padding: 1.8em 1em;
+            font-size: 1em;
+            font-weight: 500;
+            box-shadow: 0 -4px 12px rgba(42, 157, 143, 0.4);
+            margin-top: auto;
+            user-select: none;
+        }
+        footer p {
+            margin: 0;
+            letter-spacing: 0.03em;
+        }
+        @media (max-width: 720px) {
+            header h1 {
+                font-size: 2.2em;
+            }
+            header p.subtitle {
+                font-size: 1.1em;
+            }
+            header p.description {
+                font-size: 1em;
+                padding: 0 1em;
+            }
+            nav {
+                max-width: 90vw;
+                margin: 1.5em auto 2em auto;
+            }
+            nav a {
+                font-size: 1em;
+                padding: 0.5em 1.2em;
+            }
+            section#kids {
+                padding: 2em 1.2em 2.5em 1.2em;
+                max-width: 95vw;
+            }
+            section#kids h2 {
+                font-size: 1.7em;
+            }
+            section#kids p:first-of-type {
+                font-size: 1.05em;
+            }
+            section#kids h3 {
+                font-size: 1.2em;
+            }
+            #kids-menu {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 1.4em 1.4em;
+            }
+            #kids-menu li {
+                padding: 1.4em 1.2em 1.4em 1.2em;
+            }
+            #kids-menu li strong {
+                font-size: 1.1em;
+            }
+            #kids-menu li span {
+                font-size: 0.95em;
+            }
+            footer {
+                font-size: 0.95em;
+                padding: 1.5em 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 data-lang="title">BARAYA FARM</h1>
+        <p class="subtitle" data-lang="subtitle">ผักผลไม้สดใหม่ ส่งตรงจากฟาร์ม</p>
+        <p class="description">โภชนาการสำหรับเด็กเป็นสิ่งสำคัญที่ช่วยส่งเสริมการเจริญเติบโตและพัฒนาการอย่างสมบูรณ์แบบ ด้วยเมนูอาหารที่ครบถ้วนและเหมาะสมกับวัย</p>
+    </header>
+    <nav>
+        <a href="farm.html">กลับหน้าหลัก</a>
+    </nav>
+    <section id="kids">
+        <h2>โภชนาการสำหรับเด็ก</h2>
+        <p>อาหารเด็กควรมีสารอาหารครบถ้วน ส่งเสริมพัฒนาการทั้งร่างกายและสมอง...</p>
+        <ul id="benefits-list"></ul>
+        <h3>เมนูสำหรับเด็ก (รายสัปดาห์)</h3>
+        <ul id="kids-menu"></ul>
+    </section>
+    <footer>
+        <p>© 2024 BARAYA FARM - สดใหม่จากฟาร์มเพื่อสุขภาพที่ดีของเด็ก ๆ ทุกคน</p>
+    </footer>
+    <script>
+    // ประโยชน์ของอาหารเด็ก: 
+    // - ช่วยเสริมสร้างพัฒนาการทางร่างกายและสมอง
+    // - ให้พลังงานและสารอาหารที่จำเป็นต่อการเจริญเติบโต
+    // - สร้างนิสัยการกินอาหารที่ดีตั้งแต่เด็ก
+    // - เสริมภูมิคุ้มกันและลดความเสี่ยงต่อโรค
+
+    // แสดงประโยชน์ของอาหารเด็กในหน้าเว็บ
+    const benefits = [
+      "ช่วยเสริมสร้างพัฒนาการทางร่างกายและสมอง",
+      "ให้พลังงานและสารอาหารที่จำเป็นต่อการเจริญเติบโต",
+      "สร้างนิสัยการกินอาหารที่ดีตั้งแต่เด็ก",
+      "เสริมภูมิคุ้มกันและลดความเสี่ยงต่อโรค"
+    ];
+    const benefitsList = document.getElementById("benefits-list");
+    benefits.forEach(b => {
+      const li = document.createElement("li");
+      li.textContent = b;
+      benefitsList.appendChild(li);
+    });
+    const kidsMenus = [
+      ["ข้าวต้มปลา", "ไข่เจียวผักรวม", "กล้วยหอม"],
+      ["โจ๊กหมูสับ", "นมถั่วเหลือง", "แอปเปิ้ล"],
+      ["ข้าวผัดไข่", "แตงกวา", "โยเกิร์ต"],
+      ["ขนมปังโฮลวีต", "นม", "ส้ม"],
+      ["ข้าวราดแกงจืดเต้าหู้", "ฝรั่ง"],
+      ["ข้าวราดผัดผักรวม", "ไข่ต้ม", "แคนตาลูป"],
+      ["ข้าวมันไก่", "ซุปผัก", "กล้วย"]
+    ];
+
+    function generateKidsMenu() {
+      const monthSeed = new Date().getMonth();
+      const menuContainer = document.getElementById("kids-menu");
+      menuContainer.innerHTML = "";
+      for (let i = 0; i < 7; i++) {
+        const index = (monthSeed + i) % kidsMenus.length;
+        const li = document.createElement("li");
+        const strong = document.createElement("strong");
+        strong.textContent = `วัน ${i + 1}:`;
+        const span = document.createElement("span");
+        span.textContent = kidsMenus[index].join(", ");
+        li.appendChild(strong);
+        li.appendChild(span);
+        menuContainer.appendChild(li);
+      }
+    }
+
+    generateKidsMenu();
+    </script>
+</body>
+</html>

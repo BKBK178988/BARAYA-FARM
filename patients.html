@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <title>โภชนาการสำหรับผู้ป่วย</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap');
+
+        body {
+            font-family: 'Sarabun', Arial, sans-serif;
+            background: linear-gradient(135deg, #f9fbe7 0%, #e0f2f1 100%);
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background: #85cc87;
+            color: white;
+            padding: 2em 1em;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2.4em;
+            letter-spacing: 0.05em;
+        }
+
+        nav {
+            background: #e8f5e9;
+            padding: 1em;
+            text-align: center;
+        }
+
+        nav a {
+            color: #388e3c;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 0.5em 1.2em;
+            border-radius: 6px;
+            transition: background 0.3s;
+        }
+
+        nav a:hover {
+            background: #c8e6c9;
+        }
+
+        section {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #388e3c;
+            font-size: 1.8em;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 1.1em;
+            line-height: 1.6;
+            text-align: center;
+            color: #555;
+        }
+
+        #patients-menu {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        #patients-menu li {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        #patients-menu li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        #patients-menu strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #2e7d32;
+            font-size: 1.2em;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #f1f8e9;
+            color: #555;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 600px) {
+            header h1 {
+                font-size: 1.8em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>โภชนาการสำหรับผู้ป่วย</h1>
+    <p>อาหารเพื่อการฟื้นฟู สุขภาพ และพลังชีวิต</p>
+</header>
+
+<nav>
+    <a href="farm.html">กลับหน้าหลัก</a>
+</nav>
+
+<section id="patients">
+    <h2>เมนูสำหรับผู้ป่วย (รายสัปดาห์)</h2>
+    <p>ผู้ป่วยต้องการอาหารที่เหมาะสมกับการฟื้นฟูร่างกาย เช่น โปรตีนดี ผักสด และอาหารอ่อน</p>
+    <ul id="patients-menu"></ul>
+</section>
+
+<footer>
+    &copy; 2025 BARAYA FARM - ทุกสิทธิ์สงวน
+</footer>
+
+<script>
+    const patientMenus = [
+        ["โจ๊กปลา", "น้ำเปล่า", "ผลไม้"],
+        ["อกไก่ย่าง", "ซุปฟักทอง"],
+        ["ต้มจืดผักกาดขาว", "ไข่ต้ม"],
+        ["ข้าวกล้อง", "แกงเลียง", "กล้วย"],
+        ["ขนมปังโฮลวีต", "นมอัลมอนด์"],
+        ["ข้าวต้มหมูไข่ขาว", "น้ำสมุนไพร"],
+        ["ข้าวราดปลานึ่ง", "น้ำขิง"]
+    ];
+
+    function generatePatientMenu() {
+        const monthSeed = new Date().getMonth();
+        let menuHTML = "";
+        for (let i = 0; i < 7; i++) {
+            const index = (monthSeed + i * 4) % patientMenus.length;
+            menuHTML += `<li><strong>วัน ${i + 1}:</strong> ${patientMenus[index].join(", ")}</li>`;
+        }
+        document.getElementById("patients-menu").innerHTML = menuHTML;
+    }
+
+    generatePatientMenu();
+</script>
+
+</body>
+</html>
