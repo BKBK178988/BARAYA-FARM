@@ -1,6 +1,37 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
+    <!-- 🔹 แถบเมนูบาร์ -->
+<nav class="navbar">
+  <div class="logo">🌱 BARAYA FARM</div>
+  <ul class="nav-links">
+  <li><a href="#home" data-lang="menu-home">หน้าแรก</a></li>
+  <li><a href="#products" data-lang="menu-products">สินค้า</a></li>
+  <li><a href="#contact" data-lang="menu-contact">ติดต่อเรา</a></li>
+  <!--<li><a href="seller_login.html" data-lang="menu-seller">สำหรับผู้ขาย</a></li>-->
+
+  <!-- 🔽 เมนูหลักแบบดรอปดาวน์ -->
+  <li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-lang="menu-special-users">สำหรับผู้ใช้งานเฉพาะกลุ่ม ▾</a>
+    <ul class="dropdown-menu">
+      <li><a href="Kids.html" data-lang="menu-kids">สำหรับเด็ก</a></li>
+      <li><a href="Elderly.html" data-lang="menu-elderly">สำหรับผู้สูงอายุ</a></li>
+      <li><a href="Patients.html" data-lang="menu-patients">สำหรับผู้ป่วย</a></li>
+    </ul>
+</ul>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
+    toggle.addEventListener("click", e => {
+      e.preventDefault();
+      const menu = toggle.nextElementSibling;
+      menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    });
+  });
+});
+</script>
+</nav>
+  
   <meta charset="UTF-8">
   <title>BARAYA FARM</title>
   <link rel="stylesheet" href="styles_farm.css">
@@ -21,6 +52,34 @@
     </div>
   </header>
 
+<!-- 🔥 สินค้าขายดีประจำสัปดาห์ -->
+<section class="weekly-deals">
+  <h2>🔥 สินค้าขายดีประจำสัปดาห์ + โปรโมชั่น</h2>
+  <div class="deal-list">
+
+    <!-- ตัวอย่างสินค้า 1 -->
+    <div class="deal-item" data-name="guava" data-price="50">
+      <div class="sale-badge">-20%</div>
+      <img src="Guayaba.jpg" alt="guava">
+      <h3 data-lang="guava">ฝรั่งกิมจู</h3>
+      <p class="promo">🎉 โปรโมชั่น! ลดจาก <del>60</del> บาท → <strong>50 บาท/กิโลกรัม</strong></p>
+      <button class="buy-button" onclick="addToCartFarm('guava', 50)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+
+    <!-- ตัวอย่างสินค้า 2 -->
+    <div class="deal-item" data-name="coconut" data-price="30">
+      <div class="sale-badge">-15%</div>
+      <img src="green-coconut-1936274.jpg" alt="coconut">
+      <h3 data-lang="coconut">มะพร้าวน้ำหอม</h3>
+      <p class="promo">🥥 โปรโมชั่น! ลดจาก <del>35</del> บาท → <strong>30 บาท/ลูก</strong></p>
+      <button class="buy-button" onclick="addToCartFarm('coconut', 30)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+    </div>
+
+  </div>
+</section>
+
+  </div>
+</section>
 
   <section class="products">
     <!-- ทุกปุ่ม addToCartFarm ส่ง key (ภาษาอังกฤษแบบเป็น identifier) -->
@@ -39,7 +98,7 @@
       <h2 data-lang="guava">ฝรั่งกิมจู</h2>
       <p data-lang="guava-desc">กรอบ หวาน อร่อย</p>
       <p data-lang="guava-price">ราคา: 60 บาท/กิโลกรัม</p>
-      <button class="buy-button" onclick="addToCartFarm('guava', 60)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+      <!--<button class="buy-button" onclick="addToCartFarm('guava', 60)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>-->
     </div>
 
     <!-- 3 -->
@@ -48,7 +107,7 @@
       <h2 data-lang="coconut">มะพร้าวน้ำหอม</h2>
       <p data-lang="coconut-desc">น้ำหวาน หอม สดชื่น</p>
       <p data-lang="coconut-price">ราคา: 35 บาท/ลูก</p>
-      <button class="buy-button" onclick="addToCartFarm('coconut', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+      <!--<button class="buy-button" onclick="addToCartFarm('coconut', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>-->
     </div>
 
     <!-- 4 -->
@@ -506,3 +565,162 @@
 
 </body>
 </html>
+<!-- 🔘 ปุ่มเปิดป๊อปอัป -->
+<button onclick="openChatbotPopup()" 
+        style="position:fixed; bottom:20px; right:20px; padding:10px 20px; background:#28a745; color:#fff; border:none; border-radius:8px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+  💬 แชทกับผู้ช่วยฟาร์ม
+</button>
+
+<!-- 💬 กล่องป๊อปอัป Chatbot -->
+<div id="chatbot-popup" 
+     style="display:none; position:fixed; bottom:80px; right:20px; width:350px; height:450px; background:#fff; border:1px solid #ccc; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.2); overflow:hidden; z-index:9999;">
+  
+  <!-- หัวข้อ -->
+  <div style="background:#28a745; color:#fff; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+    <span>🤖 ผู้ช่วยฟาร์ม (น้องรดา)</span>
+    <button onclick="closeChatbotPopup()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✖</button>
+  </div>
+  
+  <!-- เนื้อหา Chat -->
+  <div id="chatbot-messages" style="padding:10px; height:330px; overflow-y:auto; font-size:14px;">
+    <div>👋 สวัสดีค่ะ! ฉันคือผู้ช่วยฟาร์ม BARAYA FARM</div>
+    <div>คุณอยากสอบถามเรื่อง <b>สินค้า</b>, <b>โปรโมชั่น</b>, หรือ <b>วิธีการสั่งซื้อ</b> ไหม?</div>
+  </div>
+  
+  <!-- กล่องป้อนข้อความ -->
+  <div style="padding:8px; border-top:1px solid #ddd; display:flex; gap:5px;">
+    <input id="chatbot-input" type="text" placeholder="พิมพ์ข้อความ..." 
+           style="flex:1; padding:8px; border:1px solid #ccc; border-radius:6px;">
+    <button onclick="sendChatbotMessage()" 
+            style="padding:8px 12px; background:#28a745; color:#fff; border:none; border-radius:6px; cursor:pointer;">ส่ง</button>
+  </div>
+</div>
+
+<script>
+  function openChatbotPopup() {
+    document.getElementById("chatbot-popup").style.display = "block";
+  }
+  function closeChatbotPopup() {
+    document.getElementById("chatbot-popup").style.display = "none";
+  }
+
+  function sendChatbotMessage() {
+    const input = document.getElementById("chatbot-input");
+    const messages = document.getElementById("chatbot-messages");
+    const userText = input.value.trim();
+    if (!userText) return;
+    
+    // แสดงข้อความผู้ใช้
+    const userMsg = document.createElement("div");
+    userMsg.style.textAlign = "right";
+    userMsg.innerHTML = `<span style="background:#e0ffe0; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${userText}</span>`;
+    messages.appendChild(userMsg);
+
+    // ตอบอัตโนมัติ (ตัวอย่างง่าย)
+    let reply = "ขอบคุณที่สอบถามค่ะ 🙏";
+    if (userText.includes("สินค้า")) reply = "ตอนนี้เรามีผักและผลไม้สดใหม่ เช่น กล้วย ฝรั่ง มะพร้าว 🥥🍌🍎";
+    else if (userText.includes("โปรโมชั่น")) reply = "🔥 โปรโมชั่นสัปดาห์นี้: ฝรั่งกิมจู ลดเหลือ 50 บาท/กก. และ มะพร้าวน้ำหอม เหลือ 30 บาท/ลูก!";
+    else if (userText.includes("วิธีสั่งซื้อ")) reply = "🛒 เลือกสินค้าที่ต้องการ > เพิ่มลงตะกร้า > กดบันทึกออเดอร์ > ส่งผ่าน LINE ค่ะ";
+    
+    const botMsg = document.createElement("div");
+    botMsg.style.textAlign = "left";
+    botMsg.innerHTML = `<span style="background:#f1f1f1; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${reply}</span>`;
+    messages.appendChild(botMsg);
+
+    // เลื่อนลงล่างสุด
+    messages.scrollTop = messages.scrollHeight;
+    input.value = "";
+  }
+</script>
+</div>
+
+<script>
+function openChatbotPopup() {
+    document.getElementById("chatbot-popup").style.display = "block";
+}
+function closeChatbotPopup() {
+    document.getElementById("chatbot-popup").style.display = "none";
+}
+
+function sendChatbotMessage() {
+    const input = document.getElementById("chatbot-input");
+    const messages = document.getElementById("chatbot-messages");
+    const userText = input.value.trim();
+    if (!userText) return;
+
+    // แสดงข้อความผู้ใช้
+    const userMsg = document.createElement("div");
+    userMsg.style.textAlign = "right";
+    userMsg.innerHTML = `<span style="background:#e0ffe0; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${userText}</span>`;
+    messages.appendChild(userMsg);
+
+    let reply = "ขอบคุณที่สอบถามค่ะ 🙏";
+
+    // ตรวจสอบคำถามเกี่ยวกับตะกร้า
+    if (userText.match(/ตะกร้า|รายการ|สินค้าของฉัน|cart/i)) {
+        reply = getCartSummary();
+    }
+    // ตรวจสอบคำถามเกี่ยวกับสินค้า
+    else if (userText.match(/สินค้า|มีอะไรบ้าง|what products/i)) {
+        reply = "ตอนนี้เรามีผักและผลไม้สดใหม่ เช่น กล้วย ฝรั่ง มะพร้าว 🥥🍌🍎";
+    }
+    // ตรวจสอบคำถามเกี่ยวกับโปรโมชั่น
+    else if (userText.match(/โปรโมชั่น|deal|sale/i)) {
+        reply = "🔥 โปรโมชั่นสัปดาห์นี้: ฝรั่งกิมจู ลดเหลือ 50 บาท/กก. และ มะพร้าวน้ำหอม เหลือ 30 บาท/ลูก!";
+    }
+    // ตรวจสอบคำถามเกี่ยวกับวิธีการสั่งซื้อ
+    else if (userText.match(/วิธีสั่งซื้อ|how to order/i)) {
+        reply = "🛒 เลือกสินค้าที่ต้องการ > เพิ่มลงตะกร้า > กดบันทึกออเดอร์ > ส่งผ่าน LINE ค่ะ";
+    }
+
+    const botMsg = document.createElement("div");
+    botMsg.style.textAlign = "left";
+    botMsg.innerHTML = `<span style="background:#f1f1f1; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${reply}</span>`;
+    messages.appendChild(botMsg);
+
+    messages.scrollTop = messages.scrollHeight;
+    input.value = "";
+}
+
+function getCartSummary() {
+    let cart = JSON.parse(localStorage.getItem("cartFarm") || "[]");
+    if (cart.length === 0) {
+        return "📦 ตะกร้าของคุณว่างอยู่ค่ะ";
+    }
+
+    let summary = "📦 รายการสินค้าของคุณ:\n";
+    cart.forEach(item => {
+        const name = getTranslation(item.key);
+        summary += `- ${name} x${item.quantity} = ${item.price * item.quantity} บาท\n`;
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    summary += `💰 ราคารวม: ${total} บาท`;
+
+    return summary;
+}
+
+function getTranslation(key) {
+    const translations = {
+        "green-papaya": "มะละกอดิบ",
+        "red-chili": "พริกแดง",
+        "lime": "มะนาว",
+        "lemongrass": "ตะไคร้",
+        "kaffir-lime-leaves": "ใบมะกรูด",
+        "banana": "กล้วย",
+        "guava": "ฝรั่ง",
+        "rose-apple": "ชมพู่",
+        "fresh-pandan": "ใบเตยสด"
+    };
+    return translations[key] || key;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const welcome = document.getElementById("chatbot-messages");
+    if (welcome) {
+        const intro = document.createElement("div");
+        intro.innerHTML = "👋 ยินดีต้อนรับ! คุณสามารถถามเกี่ยวกับ 'สินค้า', 'โปรโมชั่น', 'วิธีสั่งซื้อ' หรือ 'ตะกร้าของฉัน'";
+        welcome.appendChild(intro);
+    }
+});
+</script>
