@@ -1,172 +1,492 @@
 /* =========================
    สไตล์พื้นฐานของหน้าเว็บ
    ========================= */
-   body {
-    font-family: 'Arial', sans-serif;
-    background-color: #eaf5e3;
-    color: #2d4820;
-    margin: 0;
-    padding: 0;
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #eaf5e3;
+  color: #2d4820;
+  margin: 0;
+  padding: 52px 0 0 0; /* รวม padding-top กัน navbar บังเนื้อหา */
 }
 
 header {
-    background-image: url('A_beautiful_modern_coconut_farm_with_a_small_river.png');
-    background-size: cover;
-    background-position: center;
-    padding: 60px 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    color: white;
+  background-image: url('A_beautiful_modern_coconut_farm_with_a_small_river.png');
+  background-size: cover;
+  background-position: center;
+  padding: 60px 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: white;
 }
 
 h1 {
-    margin: 0;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  margin: 0;
+  font-size: 2.5rem;
+  text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 /* ปุ่มตะกร้าสินค้า */
 .cart-button {
-    background-color: #8dc891;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 10px;
+  background-color: #8dc891;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
+  z-index: 9999;
 }
 
 .cart-button:hover {
-    background-color: #76b678;
+  background-color: #76b678;
 }
 
 /* โซนแสดงสินค้า */
 .products {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-    padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
 }
 
 .product {
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 15px;
-    text-align: center;
-    width: 250px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  text-align: center;
+  width: 250px;
 }
 
 .product img {
-    max-width: 100%;
-    border-radius: 10px;
+  max-width: 100%;
+  border-radius: 10px;
 }
 
 .buy-button {
-    background-color: #8dc891;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    font-size: 1rem;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-top: 10px;
+  background-color: #8dc891;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin-top: 10px;
 }
 
 .buy-button:hover {
-    background-color: #76b678;
+  background-color: #76b678;
 }
 
 /* ตะกร้าสินค้า (cart) */
 .cart {
-    position: fixed;
-    top: 60px;
-    right: 20px;
-    width: 300px;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: fixed;
+  top: 60px;
+  right: 20px;
+  width: 300px;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  padding: 16px 20px 20px 20px;
+  border-radius: 10px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 20px;
 }
 
 /* ซ่อน cart เมื่อมี class .hidden */
 .cart.hidden {
-    display: none;
+  display: none;
 }
 
 /* เอฟเฟกต์ hover ที่ตัว cart */
 .cart:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* ปุ่ม checkout/line ใน cart */
 .checkout-button {
-    display: block;
-    background-color: #a3d9a5;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background 0.3s;
+  display: block;
+  background-color: #a3d9a5;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
 .checkout-button:hover {
-    background-color: #8dc891;
-}
-
-/* ปิดปัญหา element ทับกัน */
-.cart-button {
-    z-index: 9999;
+  background-color: #8dc891;
 }
 
 /* ส่วนท้าย (footer) */
 footer {
-    text-align: center;
-    padding: 20px;
-    background-color: #cde8c9;
-    margin-top: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #cde8c9;
+  margin-top: 20px;
 }
 
 /* สไตล์ภาษา */
 .language-switcher {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 .language-switcher button {
-    margin-right: 5px;
-    cursor: pointer;
-    border: 1px solid #fff;
-    background-color: #76b678;
-    color: #fff;
-    border-radius: 5px;
-    padding: 5px 10px;
+  margin: 0 4px;
+  padding: 4px 8px;
+  cursor: pointer;
+  border: 1px solid #fff;
+  background-color: #76b678;
+  color: #fff;
+  border-radius: 5px;
 }
 
 /* ขั้นตอนการสั่งซื้อ */
 .order-steps {
-    padding: 20px;
-    background-color: #f6fbf4;
-    margin: 20px;
-    border-radius: 10px;
+  padding: 20px;
+  background-color: #f6fbf4;
+  margin: 20px;
+  border-radius: 10px;
 }
 
 .order-steps h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 
 .order-steps ol {
-    margin: 0;
-    padding-left: 20px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+/* 🔹 เมนูบาร์แบบบาง */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(90deg, #4CAF50, #66BB6A);
+  padding: 6px 16px;
+  height: 42px; /* สูงพอดีไม่อึดอัด */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-sizing: border-box;
+}
+
+/* โลโก้ */
+.navbar .logo {
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  line-height: 1;
+}
+
+/* ลิสต์เมนู */
+.navbar .nav-links {
+  list-style: none;
+  display: flex;
+  justify-content: space-around; /* กระจายเมนูสมดุล */
+  flex: 1;                       /* กินพื้นที่ที่เหลือ */
+  margin: 0;
+  padding: 0 20px;               /* กันไม่ให้ข้อความชิดขอบ */
+  box-sizing: border-box;
+}
+
+.navbar .nav-links li {
+  text-align: center;
+  position: relative;
+}
+
+.navbar .nav-links li a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  font-size: 14px;     /* ขนาดสัมพันธ์กับความสูงแถบ */
+  font-weight: 500;
+  padding: 6px 8px;    /* padding กำลังดี ไม่บวม */
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.navbar .nav-links li a:hover {
+  background: rgba(255,255,255,0.2);
+  color: #FFF176;
+}
+
+/* 🔹 ปรับ body ไม่ให้โดนบัง */
+  
+/* 🔹 Responsive มือถือ */
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    padding: 8px 12px;
+  }
+  .navbar .nav-links {
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 0;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .navbar .nav-links li {
+    width: 100%;
+    text-align: left;
+  }
+  .navbar .nav-links li a {
+    font-size: 15px;
+    padding: 6px 10px;
+    width: 100%;
+  }
+}
+
+/* 🔥 โซนโปรโมชั่น */
+.weekly-deals {
+  background: #fff8e1;
+  padding: 16px;
+  margin: 20px 0;
+  border: 2px solid #ff9800;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(255,152,0,0.2);
+}
+
+.weekly-deals h2 {
+  color: #e65100;
+  margin-bottom: 12px;
+  font-size: 1.4em;
+  text-align: center;
+}
+
+.deal-list {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.deal-item {
+  background: #fff;
+  padding: 12px;
+  border-radius: 10px;
+  width: 200px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.deal-item img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+/* ป้าย SALE */
+.sale-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: #e53935;
+  color: #fff;
+  padding: 4px 8px;
+  font-size: 0.9em;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* ข้อความโปรโมชั่น */
+.deal-item .promo {
+  color: #d84315;
+  font-weight: bold;
+  margin: 8px 0;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 🌐 เมนู dropdown */
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: 20px;
+}
+
+.nav-links li {
+  position: relative;
+}
+
+.nav-links a {
+  text-decoration: none;
+  padding: 10px;
+  display: block;
+}
+
+/* ปรับสไตล์ dropdown */
+.navbar .dropdown {
+  position: relative;
+}
+
+.navbar .dropdown-menu {
+  display: none;
+  position: absolute;
+  background: #fff;
+  min-width: 180px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border-radius: 6px;
+  z-index: 1000;
+}
+
+.navbar .dropdown-menu li {
+  border-bottom: 1px solid #eee;
+}
+
+.navbar .dropdown-menu li a {
+  display: block;
+  padding: 10px 15px;
+  color: #333;
+  text-decoration: none;
+}
+
+.navbar .dropdown-menu li a:hover {
+  background: #28a745;
+  color: #fff;
+}
+
+/* แสดง dropdown เมื่อ hover */
+.navbar .dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* ปรับสไตล์เมนูย่อย */
+.dropdown-menu li a:hover {
+  background: #f0f0f0;
+  color: #333;
+}
+
+/* ปรับสไตล์เมนูย่อยให้เหมาะกับมือถือ */
+@media (max-width: 768px) {
+  .nav-links {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .dropdown-menu {
+    position: static;
+    box-shadow: none;
+    border: none;
+  }
+  .dropdown-menu li a {
+    padding: 10px;
+  }
+}
+
+/* =========================  
+   สไตล์สำหรับฟอร์มติดต่อเรา
+   ========================= */
+.contact-form {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contact-form h2 {
+  margin-top: 0;
+  color: #4CAF50;
+}
+
+.contact-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.contact-form button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.contact-form button:hover {
+  background-color: #45a049;
+}
+
+/* =========================  
+   สไตล์สำหรับฟอร์มสมัครสมาชิก
+   ========================= */
+.signup-form {
+  background: #44e582;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.signup-form h2 {
+  margin-top: 0;
+  color: #4CAF50;
+}
+
+.signup-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.signup-form button {
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.signup-form button:hover {
+  background-color: #45a049;
 }
