@@ -1,554 +1,758 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <!-- 🔹 แถบเมนูบาร์ -->
-<nav class="navbar">
-  <div class="logo">🌱 BARAYA FARM</div>
-  <ul class="nav-links">
-  <li><a href="#home" data-lang="menu-home">หน้าแรก</a></li>
-  <li><a href="#products" data-lang="menu-products">สินค้า</a></li>
-  <li><a href="#contact" data-lang="menu-contact">ติดต่อเรา</a></li>
-  <!--<li><a href="seller_login.html" data-lang="menu-seller">สำหรับผู้ขาย</a></li>-->
+    <nav class="navbar">
+        <div class="logo">🌱 BARAYA FARM</div>
+        <ul class="nav-links">
+            <li><a href="#home" data-lang="menu-home">หน้าแรก</a></li>
+            <li><a href="#products" data-lang="menu-products">สินค้า</a></li>
+            <li><a href="#contact-section" data-lang="menu-contact">ติดต่อเรา</a></li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-lang="menu-special-users">สำหรับผู้ใช้งานเฉพาะกลุ่ม ▾</a>
+                <ul class="dropdown-menu">
+                    <li><a href="Kids.html" data-lang="menu-kids">สำหรับเด็ก</a></li>
+                    <li><a href="Elderly.html" data-lang="menu-elderly">สำหรับผู้สูงอายุ</a></li>
+                    <li><a href="Patients.html" data-lang="menu-patients">สำหรับผู้ป่วย</a></li>
+                </ul>
+            </li>
+        </ul>
+        <button onclick="openVideoModal('https://youtu.be/gfEWq8_krs8?si=bmruPKSdxRg7_-Et')"
+                style="padding: 12px 25px; background-color: #28a745; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; font-weight: bold; margin-left: 20px;">
+            ▶️ ความรู้เกี่ยวกับมะพร้าว
+        </button>
+    </nav>
 
-  <!-- 🔽 เมนูหลักแบบดรอปดาวน์ -->
-  <li class="dropdown">
-    <a href="#" class="dropdown-toggle" data-lang="menu-special-users">สำหรับผู้ใช้งานเฉพาะกลุ่ม ▾</a>
-    <ul class="dropdown-menu">
-      <li><a href="Kids.html" data-lang="menu-kids">สำหรับเด็ก</a></li>
-      <li><a href="Elderly.html" data-lang="menu-elderly">สำหรับผู้สูงอายุ</a></li>
-      <li><a href="Patients.html" data-lang="menu-patients">สำหรับผู้ป่วย</a></li>
-    </ul>
-</ul>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-  document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
-    toggle.addEventListener("click", e => {
-      e.preventDefault();
-      const menu = toggle.nextElementSibling;
-      menu.style.display = (menu.style.display === "block") ? "none" : "block";
-    });
-  });
-});
-</script>
-</nav>
-  
-  <meta charset="UTF-8">
-  <title>BARAYA FARM</title>
-  <link rel="stylesheet" href="styles_farm.css">
+    <meta charset="UTF-8">
+    <title>BARAYA FARM</title>
+    <link rel="stylesheet" href="styles_farm.css">
+    <style>
+        /* CSS ที่ถูกเพิ่มเพื่อให้โครงสร้างพื้นฐานและการ Dropdown ทำงาน */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1000; /* เพิ่ม z-index ให้สูงขึ้น */
+            padding: 0;
+            list-style: none;
+        }
+        .dropdown-menu:not(.hidden-dropdown) {
+            display: block !important;
+        }
+        .dropdown-menu.hidden-dropdown {
+            display: none !important;
+        }
+        .dropdown-menu li a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+        .dropdown-menu li a:hover {
+            background-color: #ddd;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #28a745;
+            padding: 10px 20px;
+        }
+        .navbar .logo {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        .navbar .nav-links {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar .nav-links li {
+            position: relative;
+            margin: 0 10px;
+        }
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            display: block;
+        }
+        .navbar .nav-links a:hover {
+            background-color: #1e7e34;
+            border-radius: 5px;
+        }
+        .cart-button {
+            background-color: #ffc107;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .cart.hidden {
+            display: none;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        /* Modal Styles */
+        .modal-farm {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 50px;
+        }
+        .modal-content-farm {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 800px;
+            border-radius: 10px;
+        }
+        .close-farm {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close-farm:hover,
+        .close-farm:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .video-container-farm {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            height: 0;
+            overflow: hidden;
+        }
+        .video-container-farm iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
+<div id="videoModal" class="modal-farm">
+    <div class="modal-content-farm">
+        <span class="close-farm" onclick="closeVideoModal()">&times;</span>
+
+        <div class="video-container-farm">
+            <iframe id="youtube-embed"
+                    width="100%"
+                    height="400"
+                    src=""
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+            </iframe>
+        </div>
+    </div>
+</div>
+<header id="home">
     <h1 data-lang="title">BARAYA FARM</h1>
     <p data-lang="subtitle">ผักผลไม้สดใหม่ ส่งตรงจากฟาร์ม</p>
     <button class="cart-button" onclick="toggleCartFarm()">
-      🛒 <span data-lang="cart">ตะกร้าสินค้า</span> (<span id="cart-count-farm">0</span>)
+        🛒 <span data-lang="cart">ตะกร้าสินค้า</span> (<span id="cart-count-farm">0</span>)
     </button>
 
     <div class="language-switcher">
-      <button onclick="changeLanguage('th')">🇹🇭 ไทย</button>
-      <button onclick="changeLanguage('en')">🇬🇧 English</button>
-      <button onclick="changeLanguage('zh')">🇨🇳 中文</button>
+        <button onclick="changeLanguage('th')">🇹🇭 ไทย</button>
+        <button onclick="changeLanguage('en')">🇬🇧 English</button>
+        <button onclick="changeLanguage('zh')">🇨🇳 中文</button>
     </div>
-  </header>
+</header>
 
-<!-- 🔥 สินค้าขายดีประจำสัปดาห์ -->
 <section class="weekly-deals">
-  <h2>🔥 สินค้าขายดีประจำสัปดาห์ + โปรโมชั่น</h2>
-  <div class="deal-list">
+    <h2>🔥Promotion🔥</h2>
+    <div class="deal-list">
 
-    <!-- ตัวอย่างสินค้า 1 -->
-    <div class="deal-item" data-name="guava" data-price="50">
-      <div class="sale-badge">-20%</div>
-      <img src="Guayaba.jpg" alt="guava">
-      <h3 data-lang="guava">ฝรั่งกิมจู</h3>
-      <p class="promo">🎉 โปรโมชั่น! ลดจาก <del>60</del> บาท → <strong>50 บาท/กิโลกรัม</strong></p>
-      <button class="buy-button" onclick="addToCartFarm('guava', 50)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <div class="deal-item" data-name="guava" data-price="50">
+            <div class="sale-badge">-20%</div>
+            <img src="Guayaba.jpg" alt="guava">
+            <h3 data-lang="guava">ฝรั่งกิมจู</h3>
+            <p class="promo" data-lang="promo-guava">🎉 โปรโมชั่น! ลดจาก <del>60</del> บาท → <strong>50 บาท/กิโลกรัม</strong></p>
+            <button class="buy-button" onclick="addToCartFarm('guava', 50)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        </div>
+
+        <div class="deal-item" data-name="coconut" data-price="30">
+            <div class="sale-badge">-15%</div>
+            <img src="green-coconut-1936274.jpg" alt="coconut">
+            <h3 data-lang="coconut">มะพร้าวน้ำหอม</h3>
+            <p class="promo" data-lang="promo-coconut">🥥 โปรโมชั่น! ลดจาก <del>35</del> บาท → <strong>30 บาท/ลูก</strong></p>
+            <button class="buy-button" onclick="addToCartFarm('coconut', 30)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        </div>
+
     </div>
-
-    <!-- ตัวอย่างสินค้า 2 -->
-    <div class="deal-item" data-name="coconut" data-price="30">
-      <div class="sale-badge">-15%</div>
-      <img src="green-coconut-1936274.jpg" alt="coconut">
-      <h3 data-lang="coconut">มะพร้าวน้ำหอม</h3>
-      <p class="promo">🥥 โปรโมชั่น! ลดจาก <del>35</del> บาท → <strong>30 บาท/ลูก</strong></p>
-      <button class="buy-button" onclick="addToCartFarm('coconut', 30)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
-    </div>
-
-  </div>
 </section>
-
-  </div>
-</section>
-
-  <section class="products">
-    <!-- ทุกปุ่ม addToCartFarm ส่ง key (ภาษาอังกฤษแบบเป็น identifier) -->
-    <!-- 1 -->
+<section class="products" id="products">
     <div class="product" data-name="banana" data-price="50">
-      <img src="banana1.jpg" alt="banana">
-      <h2 data-lang="banana">กล้วยน้ำว้า</h2>
-      <p data-lang="banana-desc">หวานธรรมชาติ เนื้อนุ่มอร่อย</p>
-      <p data-lang="banana-price">ราคา: 50 บาท/หวี</p>
-      <button class="buy-button" onclick="addToCartFarm('banana', 50)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="banana1.jpg" alt="banana">
+        <h2 data-lang="banana">กล้วยน้ำว้า</h2>
+        <p data-lang="banana-desc">หวานธรรมชาติ เนื้อนุ่มอร่อย</p>
+        <p data-lang="banana-price">ราคา: 50 บาท/หวี</p>
+        <button class="buy-button" onclick="addToCartFarm('banana', 50)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 2 -->
     <div class="product" data-name="guava" data-price="60">
-      <img src="Guayaba.jpg" alt="guava">
-      <h2 data-lang="guava">ฝรั่งกิมจู</h2>
-      <p data-lang="guava-desc">กรอบ หวาน อร่อย</p>
-      <p data-lang="guava-price">ราคา: 60 บาท/กิโลกรัม</p>
-      <!--<button class="buy-button" onclick="addToCartFarm('guava', 60)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>-->
+        <img src="Guayaba.jpg" alt="guava">
+        <h2 data-lang="guava">ฝรั่งกิมจู</h2>
+        <p data-lang="guava-desc">กรอบ หวาน อร่อย</p>
+        <p data-lang="guava-price">ราคา: 60 บาท/กิโลกรัม</p>
+        <button class="buy-button" onclick="addToCartFarm('guava', 60)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 3 -->
     <div class="product" data-name="coconut" data-price="35">
-      <img src="green-coconut-1936274.jpg" alt="coconut">
-      <h2 data-lang="coconut">มะพร้าวน้ำหอม</h2>
-      <p data-lang="coconut-desc">น้ำหวาน หอม สดชื่น</p>
-      <p data-lang="coconut-price">ราคา: 35 บาท/ลูก</p>
-      <!--<button class="buy-button" onclick="addToCartFarm('coconut', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>-->
+        <img src="green-coconut-1936274.jpg" alt="coconut">
+        <h2 data-lang="coconut">มะพร้าวน้ำหอม</h2>
+        <p data-lang="coconut-desc">น้ำหวาน หอม สดชื่น</p>
+        <p data-lang="coconut-price">ราคา: 35 บาท/ลูก</p>
+        <button class="buy-button" onclick="addToCartFarm('coconut', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 4 -->
     <div class="product" data-name="roasted-coconut" data-price="40">
-      <img src="Coconut barn.jpeg" alt="roasted coconut">
-      <h2 data-lang="roasted-coconut">มะพร้าวเผา</h2>
-      <p data-lang="roasted-coconut-desc">กลิ่นเผาอ่อน ๆ</p>
-      <p data-lang="roasted-coconut-price">ราคา: 40 บาท/ลูก</p>
-      <button class="buy-button" onclick="addToCartFarm('roasted-coconut', 40)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="Coconut barn.jpeg" alt="roasted coconut">
+        <h2 data-lang="roasted-coconut">มะพร้าวเผา</h2>
+        <p data-lang="roasted-coconut-desc">กลิ่นเผาอ่อน ๆ</p>
+        <p data-lang="roasted-coconut-price">ราคา: 40 บาท/ลูก</p>
+        <button class="buy-button" onclick="addToCartFarm('roasted-coconut', 40)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 5 -->
     <div class="product" data-name="fresh-pandan" data-price="20">
-      <img src="pandan.jpg" alt="fresh pandan">
-      <h2 data-lang="fresh-pandan">ใบเตยสด</h2>
-      <p data-lang="fresh-pandan-desc">หอมสดชื่น ใช้ทำขนมและเครื่องดื่ม</p>
-      <p data-lang="fresh-pandan-price">ราคา: 20 บาท/กำ</p>
-      <button class="buy-button" onclick="addToCartFarm('fresh-pandan', 20)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="pandan.jpg" alt="fresh pandan">
+        <h2 data-lang="fresh-pandan">ใบเตยสด</h2>
+        <p data-lang="fresh-pandan-desc">หอมสดชื่น ใช้ทำขนมและเครื่องดื่ม</p>
+        <p data-lang="fresh-pandan-price">ราคา: 20 บาท/กำ</p>
+        <button class="buy-button" onclick="addToCartFarm('fresh-pandan', 20)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 6 ชมพู่ -->
     <div class="product" data-name="rose-apple" data-price="70">
-      <img src="rose-apple.jpg" alt="rose apple">
-      <h2 data-lang="rose-apple">ชมพู่</h2>
-      <p data-lang="rose-apple-desc">กรอบ หวานฉ่ำ สดชื่น</p>
-      <p data-lang="rose-apple-price">ราคา: 70 บาท/กิโลกรัม</p>
-      <button class="buy-button" onclick="addToCartFarm('rose-apple', 70)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="rose-apple.jpg" alt="rose apple">
+        <h2 data-lang="rose-apple">ชมพู่</h2>
+        <p data-lang="rose-apple-desc">กรอบ หวานฉ่ำ สดชื่น</p>
+        <p data-lang="rose-apple-price">ราคา: 70 บาท/กิโลกรัม</p>
+        <button class="buy-button" onclick="addToCartFarm('rose-apple', 70)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 7 มะละกอเขียว -->
     <div class="product" data-name="green-papaya" data-price="25">
-      <img src="green-papaya.jpg" alt="green papaya">
-      <h2 data-lang="green-papaya">มะละกอเขียว</h2>
-      <p data-lang="green-papaya-desc">เนื้อแน่น ใช้ทำส้มตำและอาหารไทย</p>
-      <p data-lang="green-papaya-price">ราคา: 25 บาท/กิโลกรัม</p>
-      <button class="buy-button" onclick="addToCartFarm('green-papaya', 25)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="green-papaya.jpg" alt="green papaya">
+        <h2 data-lang="green-papaya">มะละกอเขียว</h2>
+        <p data-lang="green-papaya-desc">เนื้อแน่น ใช้ทำส้มตำและอาหารไทย</p>
+        <p data-lang="green-papaya-price">ราคา: 25 บาท/กิโลกรัม</p>
+        <button class="buy-button" onclick="addToCartFarm('green-papaya', 25)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 8 ตะไคร้หอม -->
     <div class="product" data-name="lemongrass" data-price="30">
-      <img src="lemongrass.jpg" alt="lemongrass">
-      <h2 data-lang="lemongrass">ตะไคร้หอม</h2>
-      <p data-lang="lemongrass-desc">หอมสดชื่น ใช้ปรุงอาหารและสมุนไพร</p>
-      <p data-lang="lemongrass-price">ราคา: 30 บาท/กำ</p>
-      <button class="buy-button" onclick="addToCartFarm('lemongrass', 30)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="lemongrass.jpg" alt="lemongrass">
+        <h2 data-lang="lemongrass">ตะไคร้หอม</h2>
+        <p data-lang="lemongrass-desc">หอมสดชื่น ใช้ปรุงอาหารและสมุนไพร</p>
+        <p data-lang="lemongrass-price">ราคา: 30 บาท/กำ</p>
+        <button class="buy-button" onclick="addToCartFarm('lemongrass', 30)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 9 ใบมะกรูด -->
     <div class="product" data-name="kaffir-lime-leaves" data-price="15">
-      <img src="kaffir-lime-leaves.jpg" alt="kaffir lime leaves">
-      <h2 data-lang="kaffir-lime-leaves">ใบมะกรูด</h2>
-      <p data-lang="kaffir-lime-leaves-desc">กลิ่นหอม ใช้ปรุงอาหารไทย</p>
-      <p data-lang="kaffir-lime-leaves-price">ราคา: 15 บาท/กำ</p>
-      <button class="buy-button" onclick="addToCartFarm('kaffir-lime-leaves', 15)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="kaffir-lime-leaves.jpg" alt="kaffir lime leaves">
+        <h2 data-lang="kaffir-lime-leaves">ใบมะกรูด</h2>
+        <p data-lang="kaffir-lime-leaves-desc">กลิ่นหอม ใช้ปรุงอาหารไทย</p>
+        <p data-lang="kaffir-lime-leaves-price">ราคา: 15 บาท/กำ</p>
+        <button class="buy-button" onclick="addToCartFarm('kaffir-lime-leaves', 15)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 10 มะนาว -->
     <div class="product" data-name="lime" data-price="5">
-      <img src="lime.jpg" alt="lime">
-      <h2 data-lang="lime">มะนาว</h2>
-      <p data-lang="lime-desc">รสเปรี้ยว ใช้ทำอาหารและเครื่องดื่ม</p>
-      <p data-lang="lime-price">ราคา: 5 บาท/ลูก</p>
-      <button class="buy-button" onclick="addToCartFarm('lime', 5)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="lime.jpg" alt="lime">
+        <h2 data-lang="lime">มะนาว</h2>
+        <p data-lang="lime-desc">รสเปรี้ยว ใช้ทำอาหารและเครื่องดื่ม</p>
+        <p data-lang="lime-price">ราคา: 5 บาท/ลูก</p>
+        <button class="buy-button" onclick="addToCartFarm('lime', 5)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 11 พริกแดง -->
     <div class="product" data-name="red-chili" data-price="40">
-      <img src="red-chili.jpg" alt="red chili">
-      <h2 data-lang="red-chili">พริกแดง</h2>
-      <p data-lang="red-chili-desc">เผ็ดจัดจ้าน เหมาะสำหรับอาหารไทย</p>
-      <p data-lang="red-chili-price">ราคา: 40 บาท/กิโลกรัม</p>
-      <button class="buy-button" onclick="addToCartFarm('red-chili', 40)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="red-chili.jpg" alt="red chili">
+        <h2 data-lang="red-chili">พริกแดง</h2>
+        <p data-lang="red-chili-desc">เผ็ดจัดจ้าน เหมาะสำหรับอาหารไทย</p>
+        <p data-lang="red-chili-price">ราคา: 40 บาท/กิโลกรัม</p>
+        <button class="buy-button" onclick="addToCartFarm('red-chili', 40)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
 
-    <!-- 12 พริกเขียว -->
     <div class="product" data-name="green-chili" data-price="35">
-      <img src="green-chili.jpg" alt="green chili">
-      <h2 data-lang="green-chili">พริกเขียว</h2>
-      <p data-lang="green-chili-desc">เผ็ดหอม เหมาะสำหรับผัดและแกง</p>
-      <p data-lang="green-chili-price">ราคา: 35 บาท/กิโลกรัม</p>
-      <button class="buy-button" onclick="addToCartFarm('green-chili', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
+        <img src="green-chili.jpg" alt="green chili">
+        <h2 data-lang="green-chili">พริกเขียว</h2>
+        <p data-lang="green-chili-desc">เผ็ดหอม เหมาะสำหรับผัดและแกง</p>
+        <p data-lang="green-chili-price">ราคา: 35 บาท/กิโลกรัม</p>
+        <button class="buy-button" onclick="addToCartFarm('green-chili', 35)" data-lang="add-to-cart">เพิ่มลงตะกร้า</button>
     </div>
-  </section>
+</section>
 
-  <!-- ตะกร้าสินค้า -->
-  <div id="cart-farm" class="cart hidden" aria-hidden="true">
+<div id="cart-farm" class="cart hidden" aria-hidden="true">
     <h2>🛒 <span data-lang="cart">ตะกร้าสินค้า</span></h2>
     <ul id="cart-items-farm"></ul>
     <p id="total-price-farm">ราคารวม: 0 บาท</p>
     <button id="saveOrderButtonFarm" data-lang="save-order">📸 บันทึกออเดอร์เป็นรูปภาพ</button>
     <a href="checkout_farm.html" class="checkout-button" data-lang="checkout">🛍️ ดำเนินการสั่งซื้อ</a>
     <a id="lineOrderButtonFarm" href="#" target="_blank" class="checkout-button" data-lang="order-line">📲 สั่งซื้อผ่าน LINE</a>
-  </div>
+</div>
 
-  <section class="order-steps" style="margin-top:16px;">
+<section class="order-steps" style="margin-top:16px;">
     <h2 data-lang="order-steps-title">🛍️ วิธีการสั่งซื้อ</h2>
     <ol>
-      <li data-lang="order-step-1">เลือกสินค้าและเพิ่มลงตะกร้า</li>
-      <li data-lang="order-step-2">กดปุ่ม "📸 บันทึกออเดอร์เป็นรูปภาพ"</li>
-      <li data-lang="order-step-3">เพิ่มเพื่อนผู้ขายผ่าน <a href="https://line.me/ti/p/OJY81U61Jk" target="_blank">LINE</a></li>
-      <li data-lang="order-step-4">ส่งรูปภาพออเดอร์ที่บันทึกไว้ให้ผู้ขาย</li>
-      <li data-lang="order-step-5">รอรับข้อมูลและยืนยันคำสั่งซื้อ</li>
+        <li data-lang="order-step-1">เลือกสินค้าและเพิ่มลงตะกร้า</li>
+        <li data-lang="order-step-2">กดปุ่ม "📸 บันทึกออเดอร์เป็นรูปภาพ"</li>
+        <li data-lang="order-step-3">เพิ่มเพื่อนผู้ขายผ่าน <a href="https://line.me/ti/p/OJY81U61Jk" target="_blank">LINE</a></li>
+        <li data-lang="order-step-4">ส่งรูปภาพออเดอร์ที่บันทึกไว้ให้ผู้ขาย</li>
+        <li data-lang="order-step-5">รอรับข้อมูลและยืนยันคำสั่งซื้อ</li>
     </ol>
-  </section>
+</section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
-  <script>
+<script>
     // ---------- translations (th / en / zh) ----------
     const translations = {
-      th: {
-        "title":"BARAYA FARM",
-        "subtitle":"ผักผลไม้สดใหม่ ส่งตรงจากฟาร์ม",
-        "cart":"ตะกร้าสินค้า",
-        "add-to-cart":"เพิ่มลงตะกร้า",
-        "save-order":"📸 บันทึกออเดอร์เป็นรูปภาพ",
-        "checkout":"🛍️ ดำเนินการสั่งซื้อ",
-        "order-line":"📲 สั่งซื้อผ่าน LINE",
-        "order-steps-title":"🛍️ วิธีการสั่งซื้อ",
-        "order-step-1":"เลือกสินค้าและเพิ่มลงตะกร้า",
-        "order-step-2":"กดปุ่ม \"📸 บันทึกออเดอร์เป็นรูปภาพ\"",
-        "order-step-3":"เพิ่มเพื่อนผู้ขายผ่าน LINE",
-        "order-step-4":"ส่งรูปภาพออเดอร์ที่บันทึกไว้ให้ผู้ขาย",
-        "order-step-5":"รอรับข้อมูลและยืนยันคำสั่งซื้อ",
-        "total-price":"ราคารวม",
-        "currency":"บาท",
-        "remove":"ลบ",
-        "order-message-start":"สวัสดี! ฉันต้องการสั่งซื้อสินค้า:",
-        "order-message-empty":"สวัสดี! ฉันต้องการสอบถามข้อมูลเพิ่มเติมเกี่ยวกับสินค้า",
+        th: {
+            "title": "BARAYA FARM",
+            "subtitle": "ผักผลไม้สดใหม่ ส่งตรงจากฟาร์ม",
+            "cart": "ตะกร้าสินค้า",
+            "add-to-cart": "เพิ่มลงตะกร้า",
+            "save-order": "📸 บันทึกออเดอร์เป็นรูปภาพ",
+            "checkout": "🛍️ ดำเนินการสั่งซื้อ",
+            "order-line": "📲 สั่งซื้อผ่าน LINE",
+            "order-steps-title": "🛍️ วิธีการสั่งซื้อ",
+            "order-step-1": "เลือกสินค้าและเพิ่มลงตะกร้า",
+            "order-step-2": "กดปุ่ม \"📸 บันทึกออเดอร์เป็นรูปภาพ\"",
+            "order-step-3": "เพิ่มเพื่อนผู้ขายผ่าน LINE",
+            "order-step-4": "ส่งรูปภาพออเดอร์ที่บันทึกไว้ให้ผู้ขาย",
+            "order-step-5": "รอรับข้อมูลและยืนยันคำสั่งซื้อ",
+            "total-price": "ราคารวม",
+            "currency": "บาท",
+            "remove": "ลบ",
+            "order-message-start": "สวัสดี! ฉันต้องการสั่งซื้อสินค้า:",
+            "order-message-empty": "สวัสดี! ฉันต้องการสอบถามข้อมูลเพิ่มเติมเกี่ยวกับสินค้า",
 
-        // products
-        "banana":"กล้วยน้ำว้า",
-        "banana-desc":"หวานธรรมชาติ เนื้อนุ่มอร่อย",
-        "banana-price":"ราคา: 50 บาท/หวี",
+            "menu-home": "หน้าแรก",
+            "menu-products": "สินค้า",
+            "menu-contact": "ติดต่อเรา",
+            "menu-special-users": "สำหรับผู้ใช้งานเฉพาะกลุ่ม ▾",
+            "menu-kids": "สำหรับเด็ก",
+            "menu-elderly": "สำหรับผู้สูงอายุ",
+            "menu-patients": "สำหรับผู้ป่วย",
+            
+            // **ส่วนที่เพิ่ม/แก้ไขสำหรับโปรโมชั่น**
+            "promo-guava": "🎉 โปรโมชั่น! ลดจาก <del>60</del> บาท → <strong>50 บาท/กิโลกรัม</strong>",
+            "promo-coconut": "🥥 โปรโมชั่น! ลดจาก <del>35</del> บาท → <strong>30 บาท/ลูก</strong>",
 
-        "guava":"ฝรั่งกิมจู",
-        "guava-desc":"กรอบ หวาน อร่อย",
-        "guava-price":"ราคา: 60 บาท/กิโลกรัม",
+            "banana": "กล้วยน้ำว้า",
+            "banana-desc": "หวานธรรมชาติ เนื้อนุ่มอร่อย",
+            "banana-price": "ราคา: 50 บาท/หวี",
 
-        "coconut":"มะพร้าวน้ำหอม",
-        "coconut-desc":"น้ำหวาน หอม สดชื่น",
-        "coconut-price":"ราคา: 35 บาท/ลูก",
+            "guava": "ฝรั่งกิมจู",
+            "guava-desc": "กรอบ หวาน อร่อย",
+            "guava-price": "ราคา: 60 บาท/กิโลกรัม",
 
-        "roasted-coconut":"มะพร้าวเผา",
-        "roasted-coconut-desc":"กลิ่นเผาอ่อน ๆ",
-        "roasted-coconut-price":"ราคา: 40 บาท/ลูก",
+            "coconut": "มะพร้าวน้ำหอม",
+            "coconut-desc": "น้ำหวาน หอม สดชื่น",
+            "coconut-price": "ราคา: 35 บาท/ลูก",
 
-        "fresh-pandan":"ใบเตยสด",
-        "fresh-pandan-desc":"หอมสดชื่น ใช้ทำขนมและเครื่องดื่ม",
-        "fresh-pandan-price":"ราคา: 20 บาท/กำ",
+            "roasted-coconut": "มะพร้าวเผา",
+            "roasted-coconut-desc": "กลิ่นเผาอ่อน ๆ",
+            "roasted-coconut-price": "ราคา: 40 บาท/ลูก",
 
-        "rose-apple":"ชมพู่",
-        "rose-apple-desc":"กรอบ หวานฉ่ำ สดชื่น",
-        "rose-apple-price":"ราคา: 70 บาท/กิโลกรัม",
+            "fresh-pandan": "ใบเตยสด",
+            "fresh-pandan-desc": "หอมสดชื่น ใช้ทำขนมและเครื่องดื่ม",
+            "fresh-pandan-price": "ราคา: 20 บาท/กำ",
 
-        "green-papaya":"มะละกอเขียว",
-        "green-papaya-desc":"เนื้อแน่น ใช้ทำส้มตำและอาหารไทย",
-        "green-papaya-price":"ราคา: 25 บาท/กิโลกรัม",
+            "rose-apple": "ชมพู่",
+            "rose-apple-desc": "กรอบ หวานฉ่ำ สดชื่น",
+            "rose-apple-price": "ราคา: 70 บาท/กิโลกรัม",
 
-        "lemongrass":"ตะไคร้หอม",
-        "lemongrass-desc":"หอมสดชื่น ใช้ปรุงอาหารและสมุนไพร",
-        "lemongrass-price":"ราคา: 30 บาท/กำ",
+            "green-papaya": "มะละกอเขียว",
+            "green-papaya-desc": "เนื้อแน่น ใช้ทำส้มตำและอาหารไทย",
+            "green-papaya-price": "ราคา: 25 บาท/กิโลกรัม",
 
-        "kaffir-lime-leaves":"ใบมะกรูด",
-        "kaffir-lime-leaves-desc":"กลิ่นหอม ใช้ปรุงอาหารไทย",
-        "kaffir-lime-leaves-price":"ราคา: 15 บาท/กำ",
+            "lemongrass": "ตะไคร้หอม",
+            "lemongrass-desc": "หอมสดชื่น ใช้ปรุงอาหารและสมุนไพร",
+            "lemongrass-price": "ราคา: 30 บาท/กำ",
 
-        "lime":"มะนาว",
-        "lime-desc":"รสเปรี้ยว ใช้ทำอาหารและเครื่องดื่ม",
-        "lime-price":"ราคา: 5 บาท/ลูก",
+            "kaffir-lime-leaves": "ใบมะกรูด",
+            "kaffir-lime-leaves-desc": "กลิ่นหอม ใช้ปรุงอาหารไทย",
+            "kaffir-lime-leaves-price": "ราคา: 15 บาท/กำ",
 
-        "red-chili":"พริกแดง",
-        "red-chili-desc":"เผ็ดจัดจ้าน เหมาะสำหรับอาหารไทย",
-        "red-chili-price":"ราคา: 40 บาท/กิโลกรัม",
+            "lime": "มะนาว",
+            "lime-desc": "รสเปรี้ยว ใช้ทำอาหารและเครื่องดื่ม",
+            "lime-price": "ราคา: 5 บาท/ลูก",
 
-        "green-chili":"พริกเขียว",
-        "green-chili-desc":"เผ็ดหอม เหมาะสำหรับผัดและแกง",
-        "green-chili-price":"ราคา: 35 บาท/กิโลกรัม"
-      },
+            "red-chili": "พริกแดง",
+            "red-chili-desc": "เผ็ดจัดจ้าน เหมาะสำหรับอาหารไทย",
+            "red-chili-price": "ราคา: 40 บาท/กิโลกรัม",
 
-      en: {
-        "title":"BARAYA FARM",
-        "subtitle":"Fresh fruits and vegetables directly from the farm",
-        "cart":"Shopping Cart",
-        "add-to-cart":"Add to Cart",
-        "save-order":"📸 Save Order as Image",
-        "checkout":"🛍️ Proceed to Checkout",
-        "order-line":"📲 Order via LINE",
-        "order-steps-title":"🛍️ How to Order",
-        "order-step-1":"Select products and add them to the cart",
-        "order-step-2":"Click \"📸 Save order as an image\"",
-        "order-step-3":"Add the seller via LINE",
-        "order-step-4":"Send the saved order image to the seller",
-        "order-step-5":"Wait for confirmation",
-        "total-price":"Total Price",
-        "currency":"THB",
-        "remove":"Remove",
-        "order-message-start":"Hello! I'd like to order the following items:",
-        "order-message-empty":"Hello! I'd like to inquire about your products",
+            "green-chili": "พริกเขียว",
+            "green-chili-desc": "เผ็ดหอม เหมาะสำหรับผัดและแกง",
+            "green-chili-price": "ราคา: 35 บาท/กิโลกรัม"
+        },
 
-        "banana":"Banana",
-        "banana-desc":"Naturally sweet and soft",
-        "banana-price":"Price: 50 THB/bunch",
+        en: {
+            "title": "BARAYA FARM",
+            "subtitle": "Fresh fruits and vegetables directly from the farm",
+            "cart": "Shopping Cart",
+            "add-to-cart": "Add to Cart",
+            "save-order": "📸 Save Order as Image",
+            "checkout": "🛍️ Proceed to Checkout",
+            "order-line": "📲 Order via LINE",
+            "order-steps-title": "🛍️ How to Order",
+            "order-step-1": "Select products and add them to the cart",
+            "order-step-2": "Click \"📸 Save order as an image\"",
+            "order-step-3": "Add the seller via LINE",
+            "order-step-4": "Send the saved order image to the seller",
+            "order-step-5": "Wait for confirmation",
+            "total-price": "Total Price",
+            "currency": "THB",
+            "remove": "Remove",
+            "order-message-start": "Hello! I'd like to order the following items:",
+            "order-message-empty": "Hello! I'd like to inquire about your products",
 
-        "guava":"Guava",
-        "guava-desc":"Crispy, sweet, and delicious",
-        "guava-price":"Price: 60 THB/kg",
+            "menu-home": "Home",
+            "menu-products": "Products",
+            "menu-contact": "Contact Us",
+            "menu-special-users": "For Special Users ▾",
+            "menu-kids": "For Kids",
+            "menu-elderly": "For Elderly",
+            "menu-patients": "For Patients",
+            
+            // **ส่วนที่เพิ่ม/แก้ไขสำหรับโปรโมชั่น**
+            "promo-guava": "🎉 Promotion! Discount from <del>60</del> THB → <strong>50 THB/kg</strong>",
+            "promo-coconut": "🥥 Promotion! Discount from <del>35</del> THB → <strong>30 THB/piece</strong>",
 
-        "coconut":"Fragrant Coconut",
-        "coconut-desc":"Sweet, fragrant, and refreshing",
-        "coconut-price":"Price: 35 THB/piece",
+            "banana": "Banana",
+            "banana-desc": "Naturally sweet and soft",
+            "banana-price": "Price: 50 THB/bunch",
 
-        "roasted-coconut":"Roasted Coconut",
-        "roasted-coconut-desc":"Lightly roasted aroma",
-        "roasted-coconut-price":"Price: 40 THB/piece",
+            "guava": "Guava",
+            "guava-desc": "Crispy, sweet, and delicious",
+            "guava-price": "Price: 60 THB/kg",
 
-        "fresh-pandan":"Fresh Pandan",
-        "fresh-pandan-desc":"Fresh aroma, used for desserts & drinks",
-        "fresh-pandan-price":"Price: 20 THB/bunch",
+            "coconut": "Fragrant Coconut",
+            "coconut-desc": "Sweet, fragrant, and refreshing",
+            "coconut-price": "Price: 35 THB/piece",
 
-        "rose-apple":"Rose Apple",
-        "rose-apple-desc":"Crispy, juicy, and refreshing",
-        "rose-apple-price":"Price: 70 THB/kg",
+            "roasted-coconut": "Roasted Coconut",
+            "roasted-coconut-desc": "Lightly roasted aroma",
+            "roasted-coconut-price": "Price: 40 THB/piece",
 
-        "green-papaya":"Green Papaya",
-        "green-papaya-desc":"Firm texture, perfect for Thai papaya salad",
-        "green-papaya-price":"Price: 25 THB/kg",
+            "fresh-pandan": "Fresh Pandan",
+            "fresh-pandan-desc": "Fresh aroma, used for desserts & drinks",
+            "fresh-pandan-price": "Price: 20 THB/bunch",
 
-        "lemongrass":"Lemongrass",
-        "lemongrass-desc":"Fresh aroma, used for cooking & herbal remedies",
-        "lemongrass-price":"Price: 30 THB/bunch",
+            "rose-apple": "Rose Apple",
+            "rose-apple-desc": "Crispy, juicy, and refreshing",
+            "rose-apple-price": "Price: 70 THB/kg",
 
-        "kaffir-lime-leaves":"Kaffir Lime Leaves",
-        "kaffir-lime-leaves-desc":"Fragrant leaves, essential in Thai cuisine",
-        "kaffir-lime-leaves-price":"Price: 15 THB/bunch",
+            "green-papaya": "Green Papaya",
+            "green-papaya-desc": "Firm texture, perfect for Thai papaya salad",
+            "green-papaya-price": "Price: 25 THB/kg",
 
-        "lime":"Lime",
-        "lime-desc":"Sour flavor, used in food and drinks",
-        "lime-price":"Price: 5 THB/piece",
+            "lemongrass": "Lemongrass",
+            "lemongrass-desc": "Fresh aroma, used for cooking & herbal remedies",
+            "lemongrass-price": "Price: 30 THB/bunch",
 
-        "red-chili":"Red Chili",
-        "red-chili-desc":"Spicy and bold, great for Thai dishes",
-        "red-chili-price":"Price: 40 THB/kg",
+            "kaffir-lime-leaves": "Kaffir Lime Leaves",
+            "kaffir-lime-leaves-desc": "Fragrant leaves, essential in Thai cuisine",
+            "kaffir-lime-leaves-price": "Price: 15 THB/bunch",
 
-        "green-chili":"Green Chili",
-        "green-chili-desc":"Spicy aroma, perfect for stir-fry & curry",
-        "green-chili-price":"Price: 35 THB/kg"
-      },
+            "lime": "Lime",
+            "lime-desc": "Sour flavor, used in food and drinks",
+            "lime-price": "Price: 5 THB/piece",
 
-      zh: {
-        "title":"BARAYA 农场",
-        "subtitle":"新鲜水果和蔬菜，直接来自农场",
-        "cart":"购物车",
-        "add-to-cart":"加入购物车",
-        "save-order":"📸 保存订单为图片",
-        "checkout":"🛍️ 去结账",
-        "order-line":"📲 通过 LINE 订购",
-        "order-steps-title":"🛍️ 订购流程",
-        "order-step-1":"选择商品并加入购物车",
-        "order-step-2":"点击 \"📸 保存订单为图片\"",
-        "order-step-3":"通过 LINE 添加卖家",
-        "order-step-4":"将保存的订单图片发送给卖家",
-        "order-step-5":"等待确认",
-        "total-price":"总价",
-        "currency":"泰铢",
-        "remove":"删除",
-        "order-message-start":"你好！我想订购以下商品：",
-        "order-message-empty":"你好！我想了解更多商品信息。",
+            "red-chili": "Red Chili",
+            "red-chili-desc": "Spicy and bold, great for Thai dishes",
+            "red-chili-price": "Price: 40 THB/kg",
 
-        "banana":"香蕉",
-        "banana-desc":"天然甜美，口感柔软",
-        "banana-price":"价格：50 泰铢/串",
+            "green-chili": "Green Chili",
+            "green-chili-desc": "Spicy aroma, perfect for stir-fry & curry",
+            "green-chili-price": "Price: 35 THB/kg"
+        },
 
-        "guava":"番石榴",
-        "guava-desc":"爽脆、香甜、美味",
-        "guava-price":"价格：60 泰铢/公斤",
+        zh: {
+            "title": "BARAYA 农场",
+            "subtitle": "新鲜水果和蔬菜，直接来自农场",
+            "cart": "购物车",
+            "add-to-cart": "加入购物车",
+            "save-order": "📸 保存订单为图片",
+            "checkout": "🛍️ 去结账",
+            "order-line": "📲 通过 LINE 订购",
+            "order-steps-title": "🛍️ 订购流程",
+            "order-step-1": "选择商品并加入购物车",
+            "order-step-2": "点击 \"📸 保存订单为图片\"",
+            "order-step-3": "通过 LINE 添加卖家",
+            "order-step-4": "将保存的订单图片发送给卖家",
+            "order-step-5": "等待确认",
+            "total-price": "总价",
+            "currency": "泰铢",
+            "remove": "删除",
+            "order-message-start": "你好！我想订购以下商品：",
+            "order-message-empty": "你好！我想了解更多商品信息。",
 
-        "coconut":"香椰",
-        "coconut-desc":"甜美芬芳，清爽宜人",
-        "coconut-price":"价格：35 泰铢/个",
+            "menu-home": "主页",
+            "menu-products": "产品",
+            "menu-contact": "联系我们",
+            "menu-special-users": "特殊用户群 ▾",
+            "menu-kids": "针对儿童",
+            "menu-elderly": "针对老年人",
+            "menu-patients": "针对患者",
+            
+            // **ส่วนที่เพิ่ม/แก้ไขสำหรับโปรโมชั่น**
+            "promo-guava": "🎉 促销! 从 <del>60</del> 泰铢 → <strong>50 泰铢/公斤</strong>",
+            "promo-coconut": "🥥 促销! 从 <del>35</del> 泰铢 → <strong>30 泰铢/个</strong>",
 
-        "roasted-coconut":"烤椰子",
-        "roasted-coconut-desc":"轻度烤香",
-        "roasted-coconut-price":"价格：40 泰铢/个",
+            "banana": "香蕉",
+            "banana-desc": "天然甜美，口感柔软",
+            "banana-price": "价格：50 泰铢/串",
 
-        "fresh-pandan":"新鲜香兰叶",
-        "fresh-pandan-desc":"香气怡人，用于甜点和饮品",
-        "fresh-pandan-price":"价格：20 泰铢/捆",
+            "guava": "番石榴",
+            "guava-desc": "爽脆、香甜、美味",
+            "guava-price": "价格：60 泰铢/公斤",
 
-        "rose-apple":"莲雾",
-        "rose-apple-desc":"清脆、多汁、清爽",
-        "rose-apple-price":"价格：70 泰铢/公斤",
+            "coconut": "香椰",
+            "coconut-desc": "甜美芬芳，清爽宜人",
+            "coconut-price": "价格：35 泰铢/个",
 
-        "green-papaya":"青木瓜",
-        "green-papaya-desc":"肉质紧实，适合做泰式凉拌木瓜",
-        "green-papaya-price":"价格：25 泰铢/公斤",
+            "roasted-coconut": "烤椰子",
+            "roasted-coconut-desc": "轻度烤香",
+            "roasted-coconut-price": "价格：40 泰铢/个",
 
-        "lemongrass":"香茅",
-        "lemongrass-desc":"清香，用于烹饪和草药疗法",
-        "lemongrass-price":"价格：30 泰铢/捆",
+            "fresh-pandan": "新鲜香兰叶",
+            "fresh-pandan-desc": "香气怡人，用于甜点和饮品",
+            "fresh-pandan-price": "价格：20 泰铢/捆",
 
-        "kaffir-lime-leaves":"柠檬叶",
-        "kaffir-lime-leaves-desc":"芳香，用于泰国料理",
-        "kaffir-lime-leaves-price":"价格：15 泰铢/捆",
+            "rose-apple": "莲雾",
+            "rose-apple-desc": "清脆、多汁、清爽",
+            "rose-apple-price": "价格：70 泰铢/公斤",
 
-        "lime":"青柠",
-        "lime-desc":"酸味，用于菜肴和饮品",
-        "lime-price":"价格：5 泰铢/个",
+            "green-papaya": "青木瓜",
+            "green-papaya-desc": "肉质紧实，适合做泰式凉拌木瓜",
+            "green-papaya-price": "价格：25 泰铢/公斤",
 
-        "red-chili":"红辣椒",
-        "red-chili-desc":"辣味浓烈，适合泰式菜肴",
-        "red-chili-price":"价格：40 泰铢/公斤",
+            "lemongrass": "香茅",
+            "lemongrass-desc": "清香，用于烹饪和草药疗法",
+            "lemongrass-price": "价格：30 泰铢/捆",
 
-        "green-chili":"青辣椒",
-        "green-chili-desc":"香辣，适合炒菜和咖喱",
-        "green-chili-price":"价格：35 泰铢/公斤"
-      }
+            "kaffir-lime-leaves": "柠檬叶",
+            "kaffir-lime-leaves-desc": "芳香，用于泰国料理",
+            "kaffir-lime-leaves-price": "价格：15 泰铢/捆",
+
+            "lime": "青柠",
+            "lime-desc": "酸味，用于菜肴和饮品",
+            "lime-price": "价格：5 泰铢/个",
+
+            "red-chili": "红辣椒",
+            "red-chili-desc": "辣味浓烈，适合泰式菜肴",
+            "red-chili-price": "ราคา: 40 บาท/กิโลกรัม",
+
+            "green-chili": "青辣椒",
+            "green-chili-desc": "香辣，适合炒菜和咖喱",
+            "green-chili-price": "价格：35 泰铢/公斤"
+        }
+    };
+
+    // **💡 ฐานข้อมูลความรู้เกี่ยวกับสินค้า (Knowledge Base)**
+    const productKnowledge = {
+        guava: {
+            th: "ฝรั่งกิมจู 🍐 มีวิตามินซีสูงมาก ช่วยเสริมภูมิคุ้มกัน และมีไฟเบอร์สูงช่วยเรื่องระบบขับถ่ายค่ะ\nวิธีทาน: ล้างให้สะอาด ทานได้ทั้งเปลือกและเมล็ด\nการเก็บรักษา: ควรเก็บในตู้เย็น (ช่องปกติ) ในถุงพลาสติกจะช่วยคงความกรอบได้นาน 5-7 วัน",
+            en: "Guava (Kimju) 🍐 is very high in Vitamin C, boosts immunity, and is rich in fiber for better digestion.\nHow to eat: Wash thoroughly, can be eaten whole with peel and seeds.\nStorage: Keep in the refrigerator (crisper drawer) in a plastic bag to maintain crispness for 5-7 days.",
+            zh: "番石榴 🍐 富含维生素 C，有助于增强免疫力，且富含纤维，助消化。\n食用方法: 彻底清洗，可带皮和籽食用。\n储存: 放入冰箱（保鲜抽屉），用塑料袋包好可保鲜脆5-7天。"
+        },
+        coconut: {
+            th: "มะพร้าวน้ำหอม 🥥 น้ำมะพร้าวช่วยดับกระหาย คืนความสดชื่น และมีแร่ธาตุที่จำเป็นต่อร่างกายค่ะ\nวิธีทาน: ดื่มน้ำและทานเนื้อมะพร้าวอ่อน\nการเก็บรักษา: เก็บในตู้เย็น (ช่องปกติ) ได้นาน 1-2 สัปดาห์ หากยังไม่ได้เปิด",
+            en: "Fragrant Coconut 🥥 Coconut water helps quench thirst, provides refreshment, and contains essential minerals.\nHow to eat: Drink the water and eat the young coconut flesh.\nStorage: Keep in the refrigerator (regular compartment) for 1-2 weeks if unopened.",
+            zh: "香椰 🥥 椰子水可解渴、提神，并富含人体必需的矿物质。\n食用方法: 饮用椰子水并食用嫩椰肉。\n储存: 未开封的情况下，可在冰箱（普通保鲜层）存放 1-2 周。"
+        },
+        banana: {
+            th: "กล้วยน้ำว้า 🍌 เป็นแหล่งพลังงานที่ดี ย่อยง่าย มีโพแทสเซียมสูง เหมาะสำหรับบำรุงกล้ามเนื้อและหัวใจ\nวิธีทาน: ทานสด ๆ หรือนำไปต้ม/นึ่งเป็นของว่างเพื่อสุขภาพ\nการเก็บรักษา: ควรเก็บไว้นอกตู้เย็นที่อุณหภูมิห้อง เมื่อสุกแล้วสามารถเก็บในตู้เย็นได้ (เปลือกอาจคล้ำขึ้นแต่เนื้อยังดี)",
+            en: "Banana 🍌 is a good energy source, easy to digest, and high in potassium, great for muscle and heart health.\nHow to eat: Eat fresh or boil/steam for a healthy snack.\nStorage: Should be kept outside the refrigerator at room temperature. Once ripe, you can refrigerate it (the peel may darken but the flesh will be fine).",
+            zh: "香蕉 🍌 是良好的能量来源，易于消化，富含钾，对肌肉和心脏健康有益。\n食用方法: 直接食用，或煮/蒸作为健康零食。\n储存: 应在室温下保存，避免放入冰箱。一旦成熟，可放入冰箱储存（果皮可能会变黑，但果肉仍可食用）。"
+        },
+        'roasted-coconut': {
+            th: "มะพร้าวเผา 🔥 น้ำจะหวานหอมและเข้มข้นขึ้นจากความร้อน เหมาะสำหรับดื่มร้อนหรือเย็น\nวิธีทาน: เจาะแล้วดื่มน้ำ หรือผ่าเพื่อทานเนื้อเผา\nการเก็บรักษา: หากเผาแล้ว ควรทานให้หมดภายใน 1-2 วัน หรือเก็บในตู้เย็นได้ 3-4 วัน (รสชาติอาจอ่อนลง)",
+            en: "Roasted Coconut 🔥 The water becomes sweeter and more intense from the heat, perfect for drinking hot or cold.\nHow to eat: Pierce and drink the water, or split to eat the roasted flesh.\nStorage: If roasted, consume within 1-2 days, or refrigerate for 3-4 days (flavor may weaken).",
+            zh: "烤椰子 🔥 椰子水因受热而变得更香甜浓郁，适合冷热饮用。\n食用方法: 钻孔饮用椰子水，或切开食用烤椰肉。\n储存: 如果烤过，最好在 1-2 天内食用完毕，或冷藏 3-4 天（风味可能会减弱）。"
+        },
+        'fresh-pandan': {
+            th: "ใบเตยสด 🍃 มีกลิ่นหอมเฉพาะตัว ใช้เพิ่มกลิ่นในขนม, เครื่องดื่ม, หรือหุงข้าว ทำให้มีกลิ่นหอมผ่อนคลาย\nวิธีใช้: ขยำแล้วต้มเพื่อทำน้ำเตย, หรือมัดเป็นปมใส่ในหม้อหุงข้าว\nการเก็บรักษา: ห่อด้วยกระดาษเปียกหมาด ๆ แล้วเก็บในตู้เย็น (ช่องปกติ) จะคงความหอมได้นาน 1-2 สัปดาห์",
+            en: "Fresh Pandan 🍃 Has a unique aroma, used to fragrance desserts, drinks, or rice, offering a calming scent.\nHow to use: Crush and boil for pandan water, or tie into knots and add to a rice cooker.\nStorage: Wrap in slightly damp paper and keep in the refrigerator (regular compartment) to maintain freshness for 1-2 weeks.",
+            zh: "新鲜香兰叶 🍃 具有独特的香气，用于给甜点、饮料或米饭增香，带有放松的香气。\n使用方法: 揉搓后煮水制成香兰水，或打结放入电饭煲。\n储存: 用微湿的纸包裹，放入冰箱（普通保鲜层）可保持新鲜 1-2 周。"
+        },
+        'rose-apple': {
+            th: "ชมพู่ 🍎 ผลไม้ฉ่ำน้ำ ช่วยดับกระหาย ให้ความสดชื่น และมีแคลอรี่ต่ำ เหมาะสำหรับผู้ที่ควบคุมน้ำหนัก\nวิธีทาน: ล้างให้สะอาด ทานสด ๆ ทั้งเปลือก\nการเก็บรักษา: เก็บในตู้เย็น (ช่องผัก) ในถุงที่มีรูระบายอากาศ จะช่วยให้คงความกรอบได้นาน",
+            en: "Rose Apple 🍎 A juicy fruit that quenches thirst, provides refreshment, and is low in calories, great for weight management.\nHow to eat: Wash thoroughly and eat fresh with the peel.\nStorage: Keep in the refrigerator (vegetable crisper) in a breathable bag to maintain crispness.",
+            zh: "莲雾 🍎 一种多汁的水果，能解渴、提神，热量低，适合体重管理人士。\n食用方法: 彻底清洗，带皮新鲜食用。\n储存: 放入冰箱（蔬菜保鲜盒），用透气袋装着可保持爽脆。"
+        },
+        'green-papaya': {
+            th: "มะละกอเขียว 🥗 มีเอนไซม์ปาเปน ช่วยย่อยอาหารและโปรตีน เนื้อแน่น เหมาะสำหรับทำอาหาร\nวิธีใช้: นำไปสับ/ขูดทำส้มตำ, หรือนำไปแกงส้มและต้มจืด\nการเก็บรักษา: เก็บในตู้เย็น (ช่องผัก) ได้นานหลายสัปดาห์ หากต้องการให้เนื้อแข็งให้นำกระดาษห่อเก็บไว้",
+            en: "Green Papaya 🥗 Contains papain enzyme, which aids digestion and protein breakdown. Its firm texture is great for cooking.\nHow to use: Shredded for Som Tum (papaya salad), or used in sour curry (Kaeng Som) and clear soup.\nStorage: Keep in the refrigerator (vegetable crisper) for several weeks. Wrap in paper if you want to maintain firmness.",
+            zh: "青木瓜 🥗 含有木瓜蛋白酶，有助于消化和蛋白质分解。肉质紧实，非常适合烹饪。\n使用方法: 切丝制作泰式凉拌木瓜，或用于酸咖喱和清汤。\n储存: 放入冰箱（蔬菜保鲜盒）可保存数周。用纸包裹以保持硬度。"
+        },
+        'lemongrass': {
+            th: "ตะไคร้หอม 🌱 เป็นสมุนไพรที่มีกลิ่นหอม ช่วยขับลม ลดอาการท้องอืด นิยมใช้เป็นส่วนผสมหลักในต้มยำ\nวิธีใช้: ทุบแล้วใส่ในต้มยำ, หรือนำไปต้มเป็นเครื่องดื่มสมุนไพร\nการเก็บรักษา: ล้างแล้วห่อด้วยกระดาษหนังสือพิมพ์ ใส่ถุงพลาสติกปิดสนิท เก็บในตู้เย็น (ช่องผัก) ได้นาน 2-3 สัปดาห์",
+            en: "Lemongrass 🌱 An aromatic herb that helps relieve flatulence and bloating. It is a key ingredient in Tom Yum soup.\nHow to use: Bruised and added to Tom Yum, or boiled as an herbal drink.\nStorage: Wash, wrap in newspaper, seal in a plastic bag, and keep in the refrigerator (vegetable crisper) for 2-3 weeks.",
+            zh: "香茅 🌱 一种芳香草药，有助于缓解胀气和腹胀。是冬阴功汤的主要成分。\n使用方法: 拍扁后加入冬阴功汤中，或煮成草药饮品。\n储存: 清洗，用报纸包裹，密封在塑料袋中，放入冰箱（蔬菜保鲜盒）可保存 2-3 周。"
+        },
+        'lime': {
+            th: "มะนาว 🍋 มีวิตามินซีสูงมาก ช่วยเสริมภูมิคุ้มกัน และรสเปรี้ยวเพิ่มความอร่อยในอาหาร\nวิธีใช้: คั้นน้ำ, ฝานใส่เครื่องดื่ม, หรือใส่เปลือกในแกงเพื่อเพิ่มกลิ่นหอม\nการเก็บรักษา: เก็บในตะกร้าในตู้เย็น (ช่องปกติ) ได้นาน 2-3 สัปดาห์ หรือห่อกระดาษเก็บที่อุณหภูมิห้อง",
+            en: "Lime 🍋 is very high in Vitamin C, boosts immunity, and its sour taste enhances food flavor.\nHow to use: Squeeze juice, slice for drinks, or use the zest in curries for aroma.\nStorage: Keep in a basket in the refrigerator (regular compartment) for 2-3 weeks, or wrap in paper at room temperature.",
+            zh: "青柠 🍋 富含维生素 C，有助于增强免疫力，酸味可增强食物风味。\n使用方法: 榨汁、切片加入饮品，或将果皮加入咖喱中以增添香气。\n储存: 放入冰箱（普通保鲜层）的篮子里可保存 2-3 周，或在室温下用纸包裹。"
+        },
+        'kaffir-lime-leaves': {
+            th: "ใบมะกรูด 🌿 มีกลิ่นหอมเป็นเอกลักษณ์ ช่วยดับกลิ่นคาวและเพิ่มอรรถรสในอาหารไทย\nวิธีใช้: ฉีก/หั่นฝอยใส่ในแกง, ต้มยำ, หรือใช้ปรุงเครื่องแกง\nการเก็บรักษา: เก็บในถุงพลาสติกปิดสนิทในช่องแช่แข็ง จะคงความหอมได้นานหลายเดือน",
+            en: "Kaffir Lime Leaves 🌿 Have a unique aroma, help mask fishy smells, and enhance the taste of Thai food.\nHow to use: Tear/slice thinly and add to curries, Tom Yum, or use in curry paste.\nStorage: Store in an airtight plastic bag in the freezer to retain the aroma for several months.",
+            zh: "柠檬叶 🌿 具有独特的芳香，有助于去除腥味，提升泰式菜肴的口感。\n使用方法: 撕/切丝加入咖喱、冬阴功汤中，或用于制作咖喱酱。\n储存: 放入密封塑料袋中冷冻，可保持香气数月。"
+        }
     };
 
     // ---------- i18n helpers ----------
     function changeLanguage(lang) {
-      localStorage.setItem("language", lang);
-      document.querySelectorAll("[data-lang]").forEach(el => {
-        const key = el.dataset.lang;
-        if (translations[lang] && translations[lang][key]) el.textContent = translations[lang][key];
-      });
-      updateCartFarm();
+        localStorage.setItem("language", lang);
+        document.querySelectorAll("[data-lang]").forEach(el => {
+            const key = el.dataset.lang;
+            // ใช้ innerHTML แทน textContent เพื่อรองรับ HTML tags (<del>, <strong>) ในข้อความโปรโมชั่น
+            if (translations[lang] && translations[lang][key]) el.innerHTML = translations[lang][key];
+        });
+        updateCartFarm();
     }
 
     function getTranslation(key) {
-      const lang = localStorage.getItem("language") || "th";
-      return (translations[lang] && translations[lang][key]) ? translations[lang][key] : key;
+        const lang = localStorage.getItem("language") || "th";
+        return (translations[lang] && translations[lang][key]) ? translations[lang][key] : key;
     }
 
     // ---------- Cart ----------
     let cartFarm = [];
 
-    // load cart (compatibility: convert old {name,price,quantity} if exists)
     function loadCartFromStorage() {
-      try {
-        const raw = JSON.parse(localStorage.getItem("cartFarm") || "[]");
-        const server = [];
-        raw.forEach(it => {
-          if (it && it.key) server.push({ key: it.key, price: it.price, quantity: it.quantity || 1 });
-          else if (it && it.name) {
-            // try map stored Thai name to key (using th translations)
-            const mapping = Object.keys(translations.th).find(k => translations.th[k] === it.name);
-            server.push({ key: mapping || it.name, price: it.price, quantity: it.quantity || 1 });
-          }
-        });
-        return server;
-      } catch (e) { return []; }
+        try {
+            const raw = JSON.parse(localStorage.getItem("cartFarm") || "[]");
+            const server = [];
+            raw.forEach(it => {
+                if (it && it.key) server.push({ key: it.key, price: it.price, quantity: it.quantity || 1 });
+                else if (it && it.name) {
+                    const mapping = Object.keys(translations.th).find(k => translations.th[k] === it.name);
+                    server.push({ key: mapping || it.name, price: it.price, quantity: it.quantity || 1 });
+                }
+            });
+            return server;
+        } catch (e) { return []; }
     }
 
     document.addEventListener("DOMContentLoaded", () => {
-      changeLanguage(localStorage.getItem("language") || "th");
-      cartFarm = loadCartFromStorage();
-      updateCartFarm();
+        // Dropdown Toggle
+        document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
+            toggle.addEventListener("click", e => {
+                e.preventDefault();
+                const menu = toggle.nextElementSibling;
+                menu.classList.toggle('hidden-dropdown');
+            });
+        });
+
+        changeLanguage(localStorage.getItem("language") || "th");
+        cartFarm = loadCartFromStorage();
+        updateCartFarm();
     });
 
     function addToCartFarm(key, price) {
-      const existing = cartFarm.find(i => i.key === key);
-      if (existing) existing.quantity++;
-      else cartFarm.push({ key, price, quantity: 1 });
-      updateCartFarm();
+        const existing = cartFarm.find(i => i.key === key);
+        if (existing) existing.quantity++;
+        else cartFarm.push({ key, price, quantity: 1 });
+        updateCartFarm();
     }
 
     function removeFromCartFarm(key) {
-      const idx = cartFarm.findIndex(i => i.key === key);
-      if (idx !== -1) {
-        if (cartFarm[idx].quantity > 1) cartFarm[idx].quantity--;
-        else cartFarm.splice(idx, 1);
-        updateCartFarm();
-      }
+        const idx = cartFarm.findIndex(i => i.key === key);
+        if (idx !== -1) {
+            if (cartFarm[idx].quantity > 1) cartFarm[idx].quantity--;
+            else cartFarm.splice(idx, 1);
+            updateCartFarm();
+        }
     }
 
     function updateCartFarm() {
-      const cartList = document.getElementById("cart-items-farm");
-      const cartCountEl = document.getElementById("cart-count-farm");
-      const totalPriceEl = document.getElementById("total-price-farm");
-      const lineOrderBtn = document.getElementById("lineOrderButtonFarm");
+        const cartList = document.getElementById("cart-items-farm");
+        const cartCountEl = document.getElementById("cart-count-farm");
+        const totalPriceEl = document.getElementById("total-price-farm");
+        const lineOrderBtn = document.getElementById("lineOrderButtonFarm");
 
-      if (!cartList || !cartCountEl || !totalPriceEl || !lineOrderBtn) return;
+        if (!cartList || !cartCountEl || !totalPriceEl || !lineOrderBtn) return;
 
-      cartList.innerHTML = "";
-      let total = 0, totalItems = 0;
+        cartList.innerHTML = "";
+        let total = 0, totalItems = 0;
 
-      cartFarm.forEach(item => {
-        const li = document.createElement("li");
-        li.innerHTML = `
-          <strong>${getTranslation(item.key)}</strong> x${item.quantity} — ${item.price * item.quantity} ${getTranslation("currency")}
-          <button onclick="removeFromCartFarm('${item.key}')">❌ ${getTranslation("remove")}</button>
-        `;
-        cartList.appendChild(li);
-        total += item.price * item.quantity;
-        totalItems += item.quantity;
-      });
+        cartFarm.forEach(item => {
+            const li = document.createElement("li");
+            li.innerHTML = `
+                <strong>${getTranslation(item.key)}</strong> x${item.quantity} — ${item.price * item.quantity} ${getTranslation("currency")}
+                <button onclick="removeFromCartFarm('${item.key}')">❌ ${getTranslation("remove")}</button>
+            `;
+            cartList.appendChild(li);
+            total += item.price * item.quantity;
+            totalItems += item.quantity;
+        });
 
-      cartCountEl.textContent = totalItems;
-      totalPriceEl.textContent = `${getTranslation("total-price")}: ${total} ${getTranslation("currency")}`;
+        cartCountEl.textContent = totalItems;
+        totalPriceEl.textContent = `${getTranslation("total-price")}: ${total} ${getTranslation("currency")}`;
 
-      // save
-      localStorage.setItem("cartFarm", JSON.stringify(cartFarm));
-      localStorage.setItem("totalPriceFarm", total);
+        // save
+        localStorage.setItem("cartFarm", JSON.stringify(cartFarm));
+        localStorage.setItem("totalPriceFarm", total);
 
-      // prepare LINE message
-      const message = cartFarm.length > 0
-        ? `${getTranslation("order-message-start")}\n` + cartFarm.map(i => `${getTranslation(i.key)} x${i.quantity} - ${i.price * i.quantity} ${getTranslation("currency")}`).join("\n")
-        : getTranslation("order-message-empty");
+        // prepare LINE message
+        const message = cartFarm.length > 0
+            ? `${getTranslation("order-message-start")}\n` + cartFarm.map(i => `${getTranslation(i.key)} x${i.quantity} - ${i.price * i.quantity} ${getTranslation("currency")}`).join("\n")
+            : getTranslation("order-message-empty");
 
-      lineOrderBtn.href = `https://line.me/ti/p/~bk0704?text=${encodeURIComponent(message)}`;
+        lineOrderBtn.href = `https://line.me/ti/p/~bk0704?text=${encodeURIComponent(message)}`;
     }
 
     function toggleCartFarm() {
-      const el = document.getElementById("cart-farm");
-      el.classList.toggle("hidden");
-      el.setAttribute("aria-hidden", el.classList.contains("hidden"));
+        const el = document.getElementById("cart-farm");
+        el.classList.toggle("hidden");
+        el.setAttribute("aria-hidden", el.classList.contains("hidden"));
     }
 
     // ---------- save as image ----------
     document.getElementById("saveOrderButtonFarm").addEventListener("click", () => {
-      const cartEl = document.getElementById("cart-farm");
-      if (!cartEl || cartFarm.length === 0) {
-        alert("❌ กรุณาเพิ่มสินค้าลงตะกร้าก่อนบันทึกออเดอร์");
-        return;
-      }
-      html2canvas(cartEl, { scale: 2 }).then(canvas => {
-        canvas.toBlob(blob => {
-          const file = new File([blob], "order.png", { type: "image/png" });
-          if (navigator.canShare && navigator.canShare({ files: [file] })) {
-            navigator.share({ files: [file], title: "Order", text: "รายการออเดอร์ที่ต้องการสั่งซื้อ" }).catch(()=>{});
-          } else {
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = "order.png";
-            document.body.appendChild(link);
-            link.click();
-            link.remove();
-          }
-        }, "image/png");
-      });
+        const cartEl = document.getElementById("cart-farm");
+        if (!cartEl || cartFarm.length === 0) {
+            alert("❌ กรุณาเพิ่มสินค้าลงตะกร้าก่อนบันทึกออเดอร์");
+            return;
+        }
+        html2canvas(cartEl, { scale: 2 }).then(canvas => {
+            canvas.toBlob(blob => {
+                const file = new File([blob], "order.png", { type: "image/png" });
+                if (navigator.canShare && navigator.canShare({ files: [file] })) {
+                    navigator.share({ files: [file], title: "Order", text: "รายการออเดอร์ที่ต้องการสั่งซื้อ" }).catch(() => { });
+                } else {
+                    const link = document.createElement("a");
+                    link.href = URL.createObjectURL(blob);
+                    link.download = "order.png";
+                    document.body.appendChild(link);
+                    link.click();
+                    link.remove();
+                }
+            }, "image/png");
+        });
     });
 
     // expose
@@ -556,171 +760,214 @@ document.addEventListener("DOMContentLoaded", () => {
     window.removeFromCartFarm = removeFromCartFarm;
     window.toggleCartFarm = toggleCartFarm;
     window.changeLanguage = changeLanguage;
-  </script>
 
-  <footer style="margin-top:18px;">
+    // --------------------------------------------------
+    // 3. VIDEO MODAL FUNCTIONS
+    // --------------------------------------------------
+
+    function openVideoModal(youtubeUrl) {
+        // 1. ดึง Video ID จาก URL (เช่น 6kNABFqVV-M)
+        const url = new URL(youtubeUrl);
+        // ใช้ regular expression เพื่อให้รองรับทั้ง youtube.com/watch?v=... และ youtu.be/...
+        const videoIdMatch = youtubeUrl.match(/(?:v=|youtu\.be\/|embed\/)([^&]+)/i);
+        const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+        if (!videoId) {
+            console.error("Invalid YouTube URL provided.");
+            return;
+        }
+
+        // 2. สร้าง YouTube Embed URL
+        // เพิ่ม ?enablejsapi=1 เพื่อให้สามารถควบคุมการเล่นได้
+        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&enablejsapi=1`;
+
+        // 3. ตั้งค่า src ของ <iframe> และแสดง Modal
+        document.getElementById('youtube-embed').src = embedUrl;
+        document.getElementById('videoModal').style.display = 'block';
+    }
+
+    function closeVideoModal() {
+        const modal = document.getElementById('videoModal');
+        const iframe = document.getElementById('youtube-embed');
+
+        // 1. สั่งหยุดวิดีโอ YouTube ผ่าน API (โดยการล้าง src)
+        iframe.src = '';
+
+        // 2. ซ่อน Modal
+        modal.style.display = 'none';
+    }
+
+    // ปิดป๊อปอัพเมื่อผู้ใช้คลิกนอกกล่องวิดีโอ
+    window.onclick = function (event) {
+        const modal = document.getElementById('videoModal');
+        if (event.target == modal) {
+            closeVideoModal();
+        }
+    }
+
+    // **💡 Expose video functions**
+    window.openVideoModal = openVideoModal;
+    window.closeVideoModal = closeVideoModal;
+
+
+    // --------------------------------------------------
+    // 4. CHATBOT FUNCTIONS
+    // --------------------------------------------------
+
+    function openChatbotPopup() {
+        document.getElementById("chatbot-popup").style.display = "block";
+        const messages = document.getElementById("chatbot-messages");
+        // Ensure the welcome message is consistent when opening
+        if (messages.children.length === 2) { // Initial children are the two welcome lines in HTML
+            const intro = document.createElement("div");
+            intro.innerHTML = '<div style="margin-top: 5px;">👋 ยินดีต้อนรับ! คุณสามารถถามเกี่ยวกับ <b>สินค้า</b>, <b>โปรโมชั่น</b>, <b>วิธีสั่งซื้อ</b> หรือ <b>ตะกร้าของฉัน</b></div>';
+            messages.appendChild(intro);
+        }
+        messages.scrollTop = messages.scrollHeight;
+    }
+    function closeChatbotPopup() {
+        document.getElementById("chatbot-popup").style.display = "none";
+    }
+
+    function getCartSummary() {
+        const currentCart = window.cartFarm || [];
+        const lang = localStorage.getItem("language") || "th";
+        const t = (key) => getTranslation(key);
+
+        if (currentCart.length === 0) {
+            return lang === 'en' ? "📦 Your shopping cart is empty." :
+                lang === 'zh' ? "📦 您的购物车是空的。" :
+                "📦 ตะกร้าของคุณว่างอยู่ค่ะ";
+        }
+
+        let summary = lang === 'en' ? "📦 Your order summary:<br>" :
+            lang === 'zh' ? "📦 您的订单摘要:<br>" :
+            "📦 รายการสินค้าของคุณ:<br>";
+
+        currentCart.forEach(item => {
+            const name = t(item.key);
+            const itemTotal = item.price * item.quantity;
+            summary += `- ${name} x${item.quantity} = ${itemTotal} ${t("currency")}<br>`;
+        });
+
+        const total = currentCart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        summary += `<br>💰 <b>${t("total-price")}: ${total} ${t("currency")}</b>`;
+
+        return summary;
+    }
+
+    function sendChatbotMessage() {
+        const input = document.getElementById("chatbot-input");
+        const messages = document.getElementById("chatbot-messages");
+        const userText = input.value.trim();
+        if (!userText) return;
+
+        // 1. แสดงข้อความผู้ใช้
+        const userMsg = document.createElement("div");
+        userMsg.style.textAlign = "right";
+        userMsg.innerHTML = `<span style="background:#e0ffe0; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${userText}</span>`;
+        messages.appendChild(userMsg);
+
+        const lang = localStorage.getItem("language") || "th";
+        let reply = (lang === 'en') ? "Sorry 🙏, I can only answer simple questions about Products, Promotions, How to Order, and Your Cart." :
+            (lang === 'zh') ? "抱歉 🙏，我只能回答有关产品、促销、订购方式和您的购物车等简单问题。" :
+            "ขออภัยค่ะ 🙏 ฉันเป็นเพียงผู้ช่วยที่ตอบคำถามง่าย ๆ เช่น สินค้า, โปรโมชั่น, วิธีสั่งซื้อ, และตะกร้าของคุณ";
+
+        // 2. ตรวจสอบคำถาม
+
+        const allProductsKeys = Object.keys(productKnowledge);
+        let productFound = false;
+
+        for (const key of allProductsKeys) {
+            const thName = translations.th[key];
+            const enName = translations.en[key];
+            const zhName = translations.zh[key];
+
+            const productPattern = new RegExp(thName + '|' + enName + '|' + zhName + '|' + key, 'i');
+
+            if (userText.match(productPattern)) {
+                reply = `ข้อมูลเกี่ยวกับ ${translations[lang][key] || key}:<br>` + productKnowledge[key][lang].replace(/\n/g, '<br>');
+                productFound = true;
+                break;
+            }
+        }
+
+        if (userText.match(/ประโยชน์|เก็บ|ทาน|กิน|how to use|benefits|storage|吃法|储存|益处/i) && !productFound) {
+            const availableItems = allProductsKeys.map(k => translations[lang][k]).join(', ');
+            reply = (lang === 'en') ? `To get detailed information, please specify the product name (e.g., 'Benefits of guava'). I currently have details for: <b>${availableItems}</b>.` :
+                (lang === 'zh') ? `要获取详细信息，请指定产品名称（例如：'番石榴的益处'）。我目前有以下商品的详细信息：<b>${availableItems}</b>。` :
+                `เพื่อให้ข้อมูลที่ถูกต้อง โปรดระบุชื่อสินค้าด้วยค่ะ (เช่น 'ประโยชน์ของฝรั่ง', 'วิธีเก็บมะพร้าว') ตอนนี้ฉันมีข้อมูลสำหรับ: <b>${availableItems}</b> ค่ะ`;
+        }
+
+        else if (userText.match(/ตะกร้า|รายการ|สินค้าของฉัน|cart|order|购物车|订单/i)) {
+            reply = getCartSummary();
+        }
+        else if (userText.match(/สินค้า|มีอะไรบ้าง|what products|product|商品|有什么/i)) {
+            reply = (lang === 'en') ? "We currently have fresh fruits, vegetables, and herbs. You can find the full list below." :
+                (lang === 'zh') ? "我们目前有新鲜水果、蔬菜和草药。您可以在页面下方查看完整列表。" :
+                "ตอนนี้เรามีผัก ผลไม้ และสมุนไพรสดใหม่ ท่านสามารถดูรายการทั้งหมดได้ที่ด้านล่างของหน้าค่ะ";
+        }
+        else if (userText.match(/โปรโมชั่น|deal|sale|promotion|优惠|促销/i)) {
+            reply = (lang === 'en') ? "🔥 This week's promotion: Guava is reduced to 50 THB/kg and Fragrant Coconut is 30 THB/piece! Great value!" :
+                (lang === 'zh') ? "🔥 本周促销活动: 番石榴降至 50 泰铢/公斤，香椰降至 30 泰铢/个! 非常划算！" :
+                "🔥 โปรโมชั่นสัปดาห์นี้: ฝรั่งกิมจู ลดเหลือ 50 บาท/กก. และ มะพร้าวน้ำหอม เหลือ 30 บาท/ลูก! คุ้มมาก ๆ เลยค่ะ";
+        }
+        else if (userText.match(/วิธีสั่งซื้อ|how to order|order steps|如何订购/i)) {
+            reply = (lang === 'en') ? "🛒 How to order: <br>1. Select items > Add to Cart <br>2. Click '📸 Save Order as Image' <br>3. Send the image via LINE to the seller." :
+                (lang === 'zh') ? "🛒 订购流程: <br>1. 选择商品 > 加入购物车 <br>2. 点击 '📸 保存订单为图片' <br>3. 通过 LINE 将图片发送给卖家。" :
+                "🛒 วิธีการสั่งซื้อคือ: <br>1. เลือกสินค้าที่ต้องการ > เพิ่มลงตะกร้า <br>2. กดปุ่ม '📸 บันทึกออเดอร์เป็นรูปภาพ' <br>3. ส่งรูปภาพออเดอร์ผ่าน LINE ให้ผู้ขายค่ะ";
+        }
+
+
+        // 3. แสดงข้อความตอบกลับ
+        const botMsg = document.createElement("div");
+        botMsg.style.textAlign = "left";
+        const formattedReply = reply.replace(/\n/g, '<br>');
+        botMsg.innerHTML = `<span style="background:#f1f1f1; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${formattedReply}</span>`;
+        messages.appendChild(botMsg);
+
+        // 4. เลื่อนลงล่างสุดและเคลียร์ Input
+        messages.scrollTop = messages.scrollHeight;
+        input.value = "";
+    }
+
+    // **💡 Expose chatbot functions**
+    window.openChatbotPopup = openChatbotPopup;
+    window.closeChatbotPopup = closeChatbotPopup;
+    window.sendChatbotMessage = sendChatbotMessage;
+
+</script>
+
+<footer id="contact-section" style="margin-top:18px;">
     <p>ติดต่อเรา: <a href="https://line.me/ti/p/OJY81U61Jk">LINE</a></p>
     <p>&copy; 2025 BARAYA FARM</p>
-  </footer>
+</footer>
 
 </body>
 </html>
-<!-- 🔘 ปุ่มเปิดป๊อปอัป -->
-<button onclick="openChatbotPopup()" 
-        style="position:fixed; bottom:20px; right:20px; padding:10px 20px; background:#28a745; color:#fff; border:none; border-radius:8px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,0.2);">
-  💬 แชทกับผู้ช่วยฟาร์ม
+<button onclick="openChatbotPopup()"
+        style="position:fixed; bottom:20px; right:20px; padding:10px 20px; background:#28a745; color:#fff; border:none; border-radius:8px; cursor:pointer; box-shadow:0 0 6px rgba(0,0,0,0.2); z-index:9999;">
+    💬 แชทกับผู้ช่วยฟาร์ม
 </button>
 
-<!-- 💬 กล่องป๊อปอัป Chatbot -->
-<div id="chatbot-popup" 
+<div id="chatbot-popup"
      style="display:none; position:fixed; bottom:80px; right:20px; width:350px; height:450px; background:#fff; border:1px solid #ccc; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.2); overflow:hidden; z-index:9999;">
-  
-  <!-- หัวข้อ -->
-  <div style="background:#28a745; color:#fff; padding:10px; display:flex; justify-content:space-between; align-items:center;">
-    <span>🤖 ผู้ช่วยฟาร์ม (น้องรดา)</span>
-    <button onclick="closeChatbotPopup()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✖</button>
-  </div>
-  
-  <!-- เนื้อหา Chat -->
-  <div id="chatbot-messages" style="padding:10px; height:330px; overflow-y:auto; font-size:14px;">
-    <div>👋 สวัสดีค่ะ! ฉันคือผู้ช่วยฟาร์ม BARAYA FARM</div>
-    <div>คุณอยากสอบถามเรื่อง <b>สินค้า</b>, <b>โปรโมชั่น</b>, หรือ <b>วิธีการสั่งซื้อ</b> ไหม?</div>
-  </div>
-  
-  <!-- กล่องป้อนข้อความ -->
-  <div style="padding:8px; border-top:1px solid #ddd; display:flex; gap:5px;">
-    <input id="chatbot-input" type="text" placeholder="พิมพ์ข้อความ..." 
-           style="flex:1; padding:8px; border:1px solid #ccc; border-radius:6px;">
-    <button onclick="sendChatbotMessage()" 
-            style="padding:8px 12px; background:#28a745; color:#fff; border:none; border-radius:6px; cursor:pointer;">ส่ง</button>
-  </div>
+
+    <div style="background:#28a745; color:#fff; padding:10px; display:flex; justify-content:space-between; align-items:center;">
+        <span>🤖 ผู้ช่วยฟาร์ม (น้องรดา)</span>
+        <button onclick="closeChatbotPopup()" style="background:none; border:none; color:#fff; font-size:18px; cursor:pointer;">✖</button>
+    </div>
+
+    <div id="chatbot-messages" style="padding:10px; height:330px; overflow-y:auto; font-size:14px;">
+        <div>👋 สวัสดีค่ะ! ฉันคือผู้ช่วยฟาร์ม BARAYA FARM</div>
+        <div>คุณอยากสอบถามเรื่อง <b>สินค้า</b>, <b>โปรโมชั่น</b>, หรือ <b>วิธีการสั่งซื้อ</b> ไหม?</div>
+    </div>
+
+    <div style="padding:8px; border-top:1px solid #ddd; display:flex; gap:5px;">
+        <input id="chatbot-input" type="text" placeholder="พิมพ์ข้อความ..."
+               onkeydown="if(event.keyCode === 13) sendChatbotMessage()"
+               style="flex:1; padding:8px; border:1px solid #ccc; border-radius:6px;">
+        <button onclick="sendChatbotMessage()"
+                style="padding:8px 12px; background:#28a745; color:#fff; border:none; border-radius:6px; cursor:pointer;">ส่ง</button>
+    </div>
 </div>
-
-<script>
-  function openChatbotPopup() {
-    document.getElementById("chatbot-popup").style.display = "block";
-  }
-  function closeChatbotPopup() {
-    document.getElementById("chatbot-popup").style.display = "none";
-  }
-
-  function sendChatbotMessage() {
-    const input = document.getElementById("chatbot-input");
-    const messages = document.getElementById("chatbot-messages");
-    const userText = input.value.trim();
-    if (!userText) return;
-    
-    // แสดงข้อความผู้ใช้
-    const userMsg = document.createElement("div");
-    userMsg.style.textAlign = "right";
-    userMsg.innerHTML = `<span style="background:#e0ffe0; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${userText}</span>`;
-    messages.appendChild(userMsg);
-
-    // ตอบอัตโนมัติ (ตัวอย่างง่าย)
-    let reply = "ขอบคุณที่สอบถามค่ะ 🙏";
-    if (userText.includes("สินค้า")) reply = "ตอนนี้เรามีผักและผลไม้สดใหม่ เช่น กล้วย ฝรั่ง มะพร้าว 🥥🍌🍎";
-    else if (userText.includes("โปรโมชั่น")) reply = "🔥 โปรโมชั่นสัปดาห์นี้: ฝรั่งกิมจู ลดเหลือ 50 บาท/กก. และ มะพร้าวน้ำหอม เหลือ 30 บาท/ลูก!";
-    else if (userText.includes("วิธีสั่งซื้อ")) reply = "🛒 เลือกสินค้าที่ต้องการ > เพิ่มลงตะกร้า > กดบันทึกออเดอร์ > ส่งผ่าน LINE ค่ะ";
-    
-    const botMsg = document.createElement("div");
-    botMsg.style.textAlign = "left";
-    botMsg.innerHTML = `<span style="background:#f1f1f1; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${reply}</span>`;
-    messages.appendChild(botMsg);
-
-    // เลื่อนลงล่างสุด
-    messages.scrollTop = messages.scrollHeight;
-    input.value = "";
-  }
-</script>
-</div>
-
-<script>
-function openChatbotPopup() {
-    document.getElementById("chatbot-popup").style.display = "block";
-}
-function closeChatbotPopup() {
-    document.getElementById("chatbot-popup").style.display = "none";
-}
-
-function sendChatbotMessage() {
-    const input = document.getElementById("chatbot-input");
-    const messages = document.getElementById("chatbot-messages");
-    const userText = input.value.trim();
-    if (!userText) return;
-
-    // แสดงข้อความผู้ใช้
-    const userMsg = document.createElement("div");
-    userMsg.style.textAlign = "right";
-    userMsg.innerHTML = `<span style="background:#e0ffe0; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${userText}</span>`;
-    messages.appendChild(userMsg);
-
-    let reply = "ขอบคุณที่สอบถามค่ะ 🙏";
-
-    // ตรวจสอบคำถามเกี่ยวกับตะกร้า
-    if (userText.match(/ตะกร้า|รายการ|สินค้าของฉัน|cart/i)) {
-        reply = getCartSummary();
-    }
-    // ตรวจสอบคำถามเกี่ยวกับสินค้า
-    else if (userText.match(/สินค้า|มีอะไรบ้าง|what products/i)) {
-        reply = "ตอนนี้เรามีผักและผลไม้สดใหม่ เช่น กล้วย ฝรั่ง มะพร้าว 🥥🍌🍎";
-    }
-    // ตรวจสอบคำถามเกี่ยวกับโปรโมชั่น
-    else if (userText.match(/โปรโมชั่น|deal|sale/i)) {
-        reply = "🔥 โปรโมชั่นสัปดาห์นี้: ฝรั่งกิมจู ลดเหลือ 50 บาท/กก. และ มะพร้าวน้ำหอม เหลือ 30 บาท/ลูก!";
-    }
-    // ตรวจสอบคำถามเกี่ยวกับวิธีการสั่งซื้อ
-    else if (userText.match(/วิธีสั่งซื้อ|how to order/i)) {
-        reply = "🛒 เลือกสินค้าที่ต้องการ > เพิ่มลงตะกร้า > กดบันทึกออเดอร์ > ส่งผ่าน LINE ค่ะ";
-    }
-
-    const botMsg = document.createElement("div");
-    botMsg.style.textAlign = "left";
-    botMsg.innerHTML = `<span style="background:#f1f1f1; padding:6px 10px; border-radius:8px; display:inline-block; margin-top:4px;">${reply}</span>`;
-    messages.appendChild(botMsg);
-
-    messages.scrollTop = messages.scrollHeight;
-    input.value = "";
-}
-
-function getCartSummary() {
-    let cart = JSON.parse(localStorage.getItem("cartFarm") || "[]");
-    if (cart.length === 0) {
-        return "📦 ตะกร้าของคุณว่างอยู่ค่ะ";
-    }
-
-    let summary = "📦 รายการสินค้าของคุณ:\n";
-    cart.forEach(item => {
-        const name = getTranslation(item.key);
-        summary += `- ${name} x${item.quantity} = ${item.price * item.quantity} บาท\n`;
-    });
-
-    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    summary += `💰 ราคารวม: ${total} บาท`;
-
-    return summary;
-}
-
-function getTranslation(key) {
-    const translations = {
-        "green-papaya": "มะละกอดิบ",
-        "red-chili": "พริกแดง",
-        "lime": "มะนาว",
-        "lemongrass": "ตะไคร้",
-        "kaffir-lime-leaves": "ใบมะกรูด",
-        "banana": "กล้วย",
-        "guava": "ฝรั่ง",
-        "rose-apple": "ชมพู่",
-        "fresh-pandan": "ใบเตยสด"
-    };
-    return translations[key] || key;
-}
-
-document.addEventListener("DOMContentLoaded", () => {
-    const welcome = document.getElementById("chatbot-messages");
-    if (welcome) {
-        const intro = document.createElement("div");
-        intro.innerHTML = "👋 ยินดีต้อนรับ! คุณสามารถถามเกี่ยวกับ 'สินค้า', 'โปรโมชั่น', 'วิธีสั่งซื้อ' หรือ 'ตะกร้าของฉัน'";
-        welcome.appendChild(intro);
-    }
-});
-</script>
